@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import TerminalOutput from './TerminalOutput';
 import { ProjectBlueprint } from '../types';
@@ -42,7 +43,7 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
 
   const handleInstallSocket = () => {
     setIsInstalling(true);
-    setInstallOutput('cd apps/api\npnpm add socket.io\n\nResolving dependencies...\nFetching packages from registry...\n+ socket.io 4.8.1\n+ @types/socket.io 3.0.2\n\n✔ Backend dependencies synchronized.');
+    setInstallOutput('cd apps/api\npnpm add socket.io\n\nResolving dependencies...\nFetching packages from registry...\n+ socket.io 4.8.1\n+ @types/socket.io 3.0.2\n\n✔ NewsVortex backend dependencies synchronized.');
     
     setTimeout(() => {
       setIsInstalling(false);
@@ -52,7 +53,7 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
 
   const handleInstallWebClient = () => {
     setIsWebInstalling(true);
-    setWebInstallOutput('cd apps/web\npnpm add socket.io-client\n\nAnalyzing web workspace...\nDownloading manifest...\n+ socket.io-client 4.8.1\n\n✔ Web client initialized.');
+    setWebInstallOutput('cd apps/web\npnpm add socket.io-client\n\nAnalyzing NewsVortex web workspace...\nDownloading manifest...\n+ socket.io-client 4.8.1\n\n✔ Web client initialized.');
     
     setTimeout(() => {
       setIsWebInstalling(false);
@@ -62,20 +63,20 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
 
   const handleDbPush = () => {
     setIsPushing(true);
-    setPushOutput('Prisma schema loaded...\nAnalyzing database structure...\nPreparing migration for models: Show, Rundown, Story, Station...\nApplying changes...');
+    setPushOutput('NewsVortex Prisma schema loaded...\nAnalyzing database structure...\nPreparing migration for models: Show, Rundown, Story, Station...\nApplying changes...');
     
     setTimeout(() => {
-      setPushOutput(prev => prev + '\n\n✔ Database is now in sync with your Prisma schema.\n✔ Generated Prisma Client to node_modules/.prisma/client');
+      setPushOutput(prev => prev + '\n\n✔ NewsVortex database is now in sync with your Prisma schema.\n✔ Generated Prisma Client to node_modules/.prisma/client');
       setIsPushing(false);
     }, 1800);
   };
 
   const handleBootServer = () => {
     setIsBooting(true);
-    setBootOutput('node apps/api/src/index.ts\n\nInitializing HNMS Middleware (Helmet, CORS)...\nBootstrapping Socket.io layer...\nChecking PostgreSQL connection...');
+    setBootOutput('node apps/api/src/index.ts\n\nInitializing NewsVortex Middleware (Helmet, CORS)...\nBootstrapping Socket.io layer...\nChecking PostgreSQL connection...');
     
     setTimeout(() => {
-      setBootOutput(prev => prev + '\n\n🚀 API running at http://localhost:4000\n🕊️ WebSocket server ready');
+      setBootOutput(prev => prev + '\n\n🚀 API running at http://localhost:4000\n🕊️ NewsVortex WebSocket server ready');
       setIsBooting(false);
       setIsServerUp(true);
     }, 2000);

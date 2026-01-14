@@ -1,3 +1,4 @@
+
 import React, { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -37,7 +38,7 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-600/30">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" /></svg>
                 </div>
-                <span className="text-xl font-black tracking-tighter uppercase">HNMS <span className="text-primary-500">Sentinel</span></span>
+                <span className="text-xl font-black tracking-tighter uppercase">HATMANN <span className="text-primary-500">NewsVortex</span></span>
               </Link>
               
               <nav className="hidden lg:flex items-center gap-1">
@@ -108,11 +109,11 @@ export default function Layout({ children }: LayoutProps) {
       <footer className="bg-white border-t border-slate-100 py-3 px-6">
         <div className="container mx-auto flex justify-between items-center text-[8px] font-black uppercase tracking-[0.3em] text-slate-400">
           <div className="flex gap-6">
-            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> Central Node Active</span>
+            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> NewsVortex Central Node Active</span>
             <span className="hidden sm:inline">Broadcasting to {currentStation?.callSign} frequency</span>
           </div>
           <div className="flex gap-4">
-             <span>v3.2 Sentinel Engine</span>
+             <span>v3.2 NewsVortex Engine</span>
              <span className="text-slate-200">|</span>
              <span>{new Date().toLocaleTimeString()}</span>
           </div>

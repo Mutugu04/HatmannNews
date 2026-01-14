@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -37,7 +38,7 @@ export default function Dashboard() {
             <span className="inline-block px-4 py-1.5 bg-green-500/10 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">System Status: Nominal</span>
             <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-4 uppercase">Welcome back, {user?.firstName}.</h2>
             <p className="text-slate-500 font-medium text-lg leading-relaxed max-w-xl">
-              The Hatmann News Management System is fully synchronized. Monitor editorial streams and broadcast new intelligence globally via the WebSocket cluster.
+              The HATMANN NewsVortex is fully synchronized. Monitor editorial streams and broadcast new intelligence globally via the NewsVortex cluster.
             </p>
             
             <div className="mt-10 p-6 bg-slate-50 rounded-3xl border border-slate-100 flex items-center gap-6">
@@ -81,7 +82,7 @@ export default function Dashboard() {
              <div className="w-20 h-20 bg-primary-600 rounded-[2rem] flex items-center justify-center mb-6 shadow-2xl shadow-primary-600/30">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" /></svg>
              </div>
-             <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">Stories Engine</h3>
+             <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">NewsVortex Engine</h3>
              <p className="text-slate-400 text-sm font-medium mb-8 leading-relaxed">
                Access and manage the global narrative stream. View drafts, pending reviews, and live broadcasts.
              </p>

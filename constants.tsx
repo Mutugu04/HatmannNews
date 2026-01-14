@@ -1,3 +1,4 @@
+
 export const MIN_NODE_VERSION = 18;
 export const MIN_NPM_VERSION = 9;
 export const MIN_PNPM_VERSION = 8;
@@ -44,8 +45,8 @@ export const OS_GUIDES: Record<string, { steps: string[], command: string }> = {
 };
 
 export const HNMS_TEMPLATE = {
-  projectName: "HNMS (Hatmann News Management System)",
-  structure: `hnms/
+  projectName: "HATMANN NewsVortex",
+  structure: `newsvortex/
 ├── apps/
 │   ├── api/
 │   │   ├── package.json
@@ -73,7 +74,7 @@ export const HNMS_TEMPLATE = {
       name: "apps/api/package.json",
       path: "apps/api/package.json",
       content: `{
-  "name": "@hnms/api",
+  "name": "@newsvortex/api",
   "version": "1.0.0",
   "dependencies": {
     "socket.io": "^4.8.1",
@@ -124,7 +125,7 @@ app.use(errorHandler);
 // Use httpServer instead of app.listen
 httpServer.listen(PORT, () => {
   console.log(\`🚀 API running at http://localhost:\${PORT}\`);
-  console.log(\`🕊️ WebSocket server ready\`);
+  console.log(\`🕊️ NewsVortex WebSocket server ready\`);
 });`
     },
     {
@@ -146,7 +147,7 @@ export default router;`
       content: `import { Request, Response, NextFunction } from 'express';
 
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error('[API Error]:', err);
+  console.error('[NewsVortex API Error]:', err);
   
   res.status(err.status || 500).json({
     success: false,
@@ -189,7 +190,7 @@ export function initializeSocket(httpServer: HttpServer) {
   });
 
   io.on('connection', (socket) => {
-    console.log(\`User connected: \${socket.data.email}\`);
+    console.log(\`NewsVortex: User connected: \${socket.data.email}\`);
 
     // Join user's personal room
     socket.join(\`user:\${socket.data.userId}\`);
@@ -197,7 +198,7 @@ export function initializeSocket(httpServer: HttpServer) {
     // Join station room
     socket.on('join:station', (stationId: string) => {
       socket.join(\`station:\${stationId}\`);
-      console.log(\`\${socket.data.email} joined station \${stationId}\`);
+      console.log(\`\${socket.data.email} joined NewsVortex station \${stationId}\`);
     });
 
     // Leave station room
@@ -226,7 +227,7 @@ export function initializeSocket(httpServer: HttpServer) {
     });
 
     socket.on('disconnect', () => {
-      console.log(\`User disconnected: \${socket.data.email}\`);
+      console.log(\`NewsVortex: User disconnected: \${socket.data.email}\`);
     });
   });
 
@@ -261,7 +262,7 @@ export function getIO(): Server {
       path: "apps/api/src/utils/jwt.ts",
       content: `import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'sentinel-secure-secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'newsvortex-secure-secret';
 
 export function verifyToken(token: string): any {
   return jwt.verify(token, JWT_SECRET);
@@ -275,7 +276,7 @@ export function signToken(payload: any): string {
       name: "apps/web/package.json",
       path: "apps/web/package.json",
       content: `{
-  "name": "@hnms/web",
+  "name": "@newsvortex/web",
   "version": "1.0.0",
   "dependencies": {
     "socket.io-client": "^4.8.1",

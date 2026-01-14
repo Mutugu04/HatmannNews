@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const API_URL = 'http://localhost:4000/api';
@@ -22,7 +23,7 @@ const SEED_STATIONS = [
 
 const SEED_SHOWS = [
   { id: 's1', name: 'Morning Intelligence Report', description: 'Daily morning briefing', defaultDuration: 60 },
-  { id: 's2', name: 'The Sentinel Noon', description: 'Mid-day news summary', defaultDuration: 30 },
+  { id: 's2', name: 'The NewsVortex Noon', description: 'Mid-day news summary', defaultDuration: 30 },
   { id: 's3', name: 'Global Narrative Review', description: 'International affairs analysis', defaultDuration: 45 }
 ];
 
@@ -56,7 +57,7 @@ api.interceptors.response.use(
       const url = config.url || '';
       const method = config.method || 'get';
 
-      console.warn(`[Sentinel API] Server offline. Simulating response for: ${method.toUpperCase()} ${url}`);
+      console.warn(`[NewsVortex API] Server offline. Simulating response for: ${method.toUpperCase()} ${url}`);
 
       // Route Handlers
       if (url.includes('/stories')) {
@@ -117,7 +118,7 @@ api.interceptors.response.use(
         return { data: { success: true, data: [
           { id: 'w1', name: 'Reuters Global', slug: 'reuters', lastFetched: new Date().toISOString(), _count: { items: 124 } },
           { id: 'w2', name: 'Associated Press', slug: 'ap', lastFetched: new Date().toISOString(), _count: { items: 89 } },
-          { id: 'w3', name: 'Sentinel Intelligence', slug: 'sentinel', lastFetched: new Date().toISOString(), _count: { items: 12 } }
+          { id: 'w3', name: 'NewsVortex Intelligence', slug: 'newsvortex', lastFetched: new Date().toISOString(), _count: { items: 12 } }
         ]}};
       }
 
@@ -125,7 +126,7 @@ api.interceptors.response.use(
         return { data: { success: true, data: { items: [
           { id: 'wi1', title: 'Markets Rally on Positive Jobs Data', summary: 'Global stocks surged today as employment numbers exceeded analyst expectations in key sectors.', service: { name: 'Reuters' }, publishedAt: new Date().toISOString(), importedToId: null },
           { id: 'wi2', title: 'Cybersecurity Breach in Financial Hub', summary: 'Major banks are on high alert following a sophisticated digital incursion targeting transaction logs.', service: { name: 'AP' }, publishedAt: new Date().toISOString(), importedToId: 'st1' },
-          { id: 'wi3', title: 'Space Agency Successfully Deploys Satellite', summary: 'The deep-space array is now operational, providing high-resolution imaging of the outer belt.', service: { name: 'Sentinel' }, publishedAt: new Date().toISOString(), importedToId: null }
+          { id: 'wi3', title: 'Space Agency Successfully Deploys Satellite', summary: 'The deep-space array is now operational, providing high-resolution imaging of the outer belt.', service: { name: 'NewsVortex' }, publishedAt: new Date().toISOString(), importedToId: null }
         ]}}};
       }
 
