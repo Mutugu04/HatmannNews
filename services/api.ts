@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const API_URL = 'http://localhost:4000/api';
@@ -18,7 +17,8 @@ const setMockData = (key: string, data: any) => sessionStorage.setItem(`mock_${k
 const SEED_STATIONS = [
   { id: '1', name: 'Freedom Radio Kano', callSign: 'FRKANO', frequency: '99.5 FM', city: 'Kano' },
   { id: '2', name: 'Freedom Radio Dutse', callSign: 'FRDUTSE', frequency: '99.5 FM', city: 'Dutse' },
-  { id: '3', name: 'Freedom Radio Kaduna', callSign: 'FRKADUNA', frequency: '92.9 FM', city: 'Kaduna' }
+  { id: '3', name: 'Freedom Radio Kaduna', callSign: 'FRKADUNA', frequency: '92.9 FM', city: 'Kaduna' },
+  { id: '4', name: 'Dala FM 88.5 Kano', callSign: 'DALAFM', frequency: '88.5 FM', city: 'Kano' }
 ];
 
 const SEED_SHOWS = [
@@ -130,8 +130,17 @@ api.interceptors.response.use(
         ]}}};
       }
 
-      if (url.includes('/stations/my-stations')) {
-        return { data: { success: true, data: getMockData('stations') } };
+      if (url.includes('/stations')) {
+        const stations = getMockData('stations');
+        if (method === 'get') {
+          return { data: { success: true, data: stations } };
+        }
+        if (method === 'post') {
+          const newStation = { ...JSON.parse(config.data), id: `st${Date.now()}` };
+          const updated = [...stations, newStation];
+          setMockData('stations', updated);
+          return { data: { success: true, data: newStation } };
+        }
       }
     }
     return Promise.reject(error);

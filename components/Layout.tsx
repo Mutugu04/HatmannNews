@@ -1,4 +1,3 @@
-
 import React, { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -20,6 +19,7 @@ export default function Layout({ children }: LayoutProps) {
     { path: '/wire', label: 'Wire Feeds' },
     { path: '/shows', label: 'Shows' },
     { path: '/centre', label: 'Centre Page' },
+    { path: '/settings', label: 'Settings' },
   ];
 
   const isActive = (path: string) => {
@@ -28,9 +28,9 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col print:bg-white">
       {/* Header */}
-      <header className="bg-slate-900 text-white shadow-2xl relative z-50">
+      <header className="bg-slate-900 text-white shadow-2xl relative z-50 print:hidden">
         <div className="container mx-auto px-6">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-10">
@@ -101,16 +101,17 @@ export default function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow py-10 px-6">
+      <main className="flex-grow py-10 px-6 print:p-0">
         {children}
       </main>
 
       {/* Global Status Bar */}
-      <footer className="bg-white border-t border-slate-100 py-3 px-6">
+      <footer className="bg-white border-t border-slate-100 py-3 px-6 print:hidden">
         <div className="container mx-auto flex justify-between items-center text-[8px] font-black uppercase tracking-[0.3em] text-slate-400">
-          <div className="flex gap-6">
-            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> NewsVortex Central Node Active</span>
+          <div className="flex gap-6 items-center">
+            <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span> NewsVortex Node Active</span>
             <span className="hidden sm:inline">Broadcasting to {currentStation?.callSign} frequency</span>
+            <Link to="/docs" className="hover:text-primary-600 transition-colors border-l border-slate-200 pl-4 ml-2">System Manual & Documentation</Link>
           </div>
           <div className="flex gap-4">
              <span>v3.2 NewsVortex Engine</span>

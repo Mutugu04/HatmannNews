@@ -12,6 +12,8 @@ import CentrePage from './pages/CentrePage';
 import WireFeed from './pages/WireFeed';
 import RundownEditor from './pages/RundownEditor';
 import Shows from './pages/Shows';
+import Documentation from './pages/Documentation';
+import Settings from './pages/Settings';
 import Layout from './components/Layout';
 
 function ProtectedRoute({ children }: { children?: React.ReactNode }) {
@@ -62,6 +64,8 @@ function AppRoutes() {
       <Route path="/rundown/:id" element={<ProtectedRoute><RundownEditor /></ProtectedRoute>} />
       <Route path="/shows" element={<ProtectedRoute><Shows /></ProtectedRoute>} />
       <Route path="/centre" element={<ProtectedRoute><CentrePage /></ProtectedRoute>} />
+      <Route path="/docs" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" />} />
     </Routes>
   );

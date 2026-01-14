@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { useAuth } from './AuthContext';
 import { useSocket } from './SocketContext';
 
-interface Station {
+export interface Station {
   id: string;
   name: string;
   callSign: string;
@@ -15,6 +15,7 @@ interface StationContextType {
   stations: Station[];
   currentStation: Station | null;
   setCurrentStation: (station: Station) => void;
+  addStation: (station: Omit<Station, 'id'>) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -23,7 +24,8 @@ const StationContext = createContext<StationContextType | undefined>(undefined);
 const FALLBACK_STATIONS: Station[] = [
   { id: '1', name: 'Freedom Radio Kano', callSign: 'FRKANO', frequency: '99.5 FM', city: 'Kano' },
   { id: '2', name: 'Freedom Radio Dutse', callSign: 'FRDUTSE', frequency: '99.5 FM', city: 'Dutse' },
-  { id: '3', name: 'Freedom Radio Kaduna', callSign: 'FRKADUNA', frequency: '92.9 FM', city: 'Kaduna' }
+  { id: '3', name: 'Freedom Radio Kaduna', callSign: 'FRKADUNA', frequency: '92.9 FM', city: 'Kaduna' },
+  { id: '4', name: 'Dala FM 88.5 Kano', callSign: 'DALAFM', frequency: '88.5 FM', city: 'Kano' }
 ];
 
 export function StationProvider({ children }: { children?: ReactNode }) {
@@ -83,11 +85,28 @@ export function StationProvider({ children }: { children?: ReactNode }) {
     localStorage.setItem('currentStationId', station.id);
   };
 
+  const addStation = async (stationData: Omit<Station, 'id'>) => {
+    try {
+      const response = await api.post('/stations', stationData);
+      const newStation = response.data.data;
+      setStations(prev => [...prev, newStation]);
+    } catch (error) {
+      // Fallback for mock environment
+      const newStation = { ...stationData, id: `st-${Date.now()}` };
+      setStations(prev => [...prev, newStation]);
+      
+      // Update session storage so it persists if using the mock api
+      const currentMocks = JSON.parse(sessionStorage.getItem('mock_stations') || '[]');
+      sessionStorage.setItem('mock_stations', JSON.stringify([...currentMocks, newStation]));
+    }
+  };
+
   return (
     <StationContext.Provider value={{ 
       stations, 
       currentStation, 
       setCurrentStation: handleSetStation, 
+      addStation,
       isLoading 
     }}>
       {children}
