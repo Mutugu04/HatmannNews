@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useStation, Station } from '../contexts/StationContext';
+import { api } from '../services/api';
 
 type SettingTab = 'general' | 'account' | 'stations' | 'integrations';
+
+interface WireService {
+  id: string;
+  name: string;
+  slug: string;
+  status: string;
+  description: string;
+  isError?: boolean;
+}
 
 export default function Settings() {
   const { user } = useAuth();
   const { stations, addStation } = useStation();
   const [activeTab, setActiveTab] = useState<SettingTab>('general');
+  
+  // Station State
   const [isAddingStation, setIsAddingStation] = useState(false);
   const [newStation, setNewStation] = useState<Omit<Station, 'id'>>({
     name: '',
@@ -15,6 +28,32 @@ export default function Settings() {
     frequency: '',
     city: ''
   });
+
+  // Wire Service State
+  const [wireServices, setWireServices] = useState<WireService[]>([]);
+  const [isAddingWire, setIsAddingWire] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [newWire, setNewWire] = useState({
+    name: '',
+    slug: 'rss',
+    feedUrl: '',
+    apiKey: ''
+  });
+
+  useEffect(() => {
+    if (activeTab === 'integrations') {
+      loadWireServices();
+    }
+  }, [activeTab]);
+
+  const loadWireServices = async () => {
+    try {
+      const response = await api.get('/wire/services');
+      setWireServices(response.data.data || []);
+    } catch (error) {
+      console.error('Failed to load wire services');
+    }
+  };
 
   const handleAddStation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +66,29 @@ export default function Settings() {
     }
   };
 
+  const handleAddWire = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsVerifying(true);
+    
+    // Simulate verification delay
+    setTimeout(async () => {
+      try {
+        await api.post('/wire/services', newWire);
+        setIsAddingWire(false);
+        setIsVerifying(false);
+        setNewWire({ name: '', slug: 'rss', feedUrl: '', apiKey: '' });
+        loadWireServices();
+      } catch (error) {
+        alert('Failed to initialize wire integration.');
+        setIsVerifying(false);
+      }
+    }, 1500);
+  };
+
   const tabs: { id: SettingTab; label: string; icon: React.ReactNode }[] = [
     { id: 'general', label: 'General', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg> },
     { id: 'account', label: 'Account', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> },
-    { id: 'stations', label: 'Stations', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg> },
+    { id: 'stations', label: 'Stations', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg> },
     { id: 'integrations', label: 'Integrations', icon: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg> },
   ];
 
@@ -226,30 +284,109 @@ export default function Settings() {
           {activeTab === 'integrations' && (
             <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
               <section>
-                <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 flex items-center gap-3">
-                  <span className="w-1.5 h-6 bg-primary-600 rounded-full"></span>
-                  Intelligence Streams
-                </h2>
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">
+                    <span className="w-1.5 h-6 bg-primary-600 rounded-full"></span>
+                    Intelligence Streams
+                  </h2>
+                  <button 
+                    onClick={() => setIsAddingWire(true)}
+                    className="px-6 py-3 bg-primary-600 text-white rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-lg shadow-primary-600/20"
+                  >
+                    Add Integration
+                  </button>
+                </div>
+
+                {isAddingWire && (
+                  <form onSubmit={handleAddWire} className="mb-10 bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 animate-in zoom-in-95 duration-200">
+                    <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Setup Wire Service</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                      <div className="md:col-span-2">
+                        <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Service Identity</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={newWire.name}
+                          onChange={e => setNewWire({...newWire, name: e.target.value})}
+                          placeholder="e.g. Al Jazeera RSS"
+                          className="w-full bg-white border-0 rounded-xl px-5 py-3 text-xs font-bold text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Provider Protocol</label>
+                        <select
+                          value={newWire.slug}
+                          onChange={e => setNewWire({...newWire, slug: e.target.value})}
+                          className="w-full bg-white border-0 rounded-xl px-5 py-3 text-xs font-bold text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                        >
+                          <option value="rss">Standard RSS/Atom</option>
+                          <option value="reuters">Reuters Connect API</option>
+                          <option value="ap">AP NewsRoom API</option>
+                          <option value="afp">AFP News API</option>
+                          <option value="custom">Custom Webhook</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Verification URL</label>
+                        <input 
+                          type="url" 
+                          required
+                          value={newWire.feedUrl}
+                          onChange={e => setNewWire({...newWire, feedUrl: e.target.value})}
+                          placeholder="https://api.provider.com/v1"
+                          className="w-full bg-white border-0 rounded-xl px-5 py-3 text-xs font-bold text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                        />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Intelligence Key / Bearer Token</label>
+                        <input 
+                          type="password" 
+                          value={newWire.apiKey}
+                          onChange={e => setNewWire({...newWire, apiKey: e.target.value})}
+                          placeholder="••••••••••••••••"
+                          className="w-full bg-white border-0 rounded-xl px-5 py-3 text-xs font-bold text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <button 
+                        type="button"
+                        onClick={() => setIsAddingWire(false)}
+                        className="flex-grow py-3 bg-white text-slate-400 rounded-xl text-[9px] font-black uppercase tracking-widest border border-slate-100"
+                      >
+                        Discard
+                      </button>
+                      <button 
+                        type="submit"
+                        disabled={isVerifying}
+                        className="flex-grow py-3 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase tracking-widest shadow-xl flex items-center justify-center gap-2"
+                      >
+                        {isVerifying && <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>}
+                        {isVerifying ? 'Verifying Handshake...' : 'Authenticate Stream'}
+                      </button>
+                    </div>
+                  </form>
+                )}
+
                 <div className="grid gap-6">
-                  <IntegrationCard 
-                    name="Reuters Global" 
-                    status="Connected" 
-                    description="Standard API for international narrative flow."
-                    icon={<div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-black">R</div>}
-                  />
-                  <IntegrationCard 
-                    name="Associated Press" 
-                    status="Sync Error" 
-                    description="High-velocity data item transmission."
-                    icon={<div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-black">AP</div>}
-                    isError
-                  />
-                  <IntegrationCard 
-                    name="Sentinel AI" 
-                    status="Initialized" 
-                    description="Automated diagnostic and vision detection layer."
-                    icon={<div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 font-black">S</div>}
-                  />
+                  {wireServices.map((service) => (
+                    <IntegrationCard 
+                      key={service.id}
+                      name={service.name}
+                      status={service.status}
+                      description={service.description}
+                      isError={service.status.toLowerCase().includes('error')}
+                      icon={
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-black uppercase ${
+                          service.slug === 'reuters' ? 'bg-orange-500' : 
+                          service.slug === 'ap' ? 'bg-blue-600' : 
+                          service.slug === 'newsvortex' ? 'bg-purple-600' : 'bg-slate-700'
+                        }`}>
+                          {service.name.charAt(0)}
+                        </div>
+                      }
+                    />
+                  ))}
                 </div>
               </section>
             </div>
@@ -260,7 +397,17 @@ export default function Settings() {
   );
 }
 
-function IntegrationCard({ name, status, description, icon, isError }: { name: string; status: string; description: string; icon: React.ReactNode; isError?: boolean }) {
+// Fixed type error: define props interface for IntegrationCard
+interface IntegrationCardProps {
+  name: string;
+  status: string;
+  description: string;
+  icon: React.ReactNode;
+  isError?: boolean;
+}
+
+// Convert to a proper functional component to handle React's reserved 'key' prop correctly in TS
+const IntegrationCard: React.FC<IntegrationCardProps> = ({ name, status, description, icon, isError }) => {
   return (
     <div className="flex items-center justify-between p-6 border-2 border-slate-50 rounded-3xl hover:border-primary-100 transition-all group">
       <div className="flex items-center gap-6">

@@ -34,10 +34,17 @@ const SEED_STORIES = [
   { id: 'st4', title: 'Environmental Accord Signed in Zurich', status: 'DRAFT', wordCount: 310, createdAt: new Date().toISOString(), author: { firstName: 'Robert', lastName: 'Neville' }, priority: 'LOW' }
 ];
 
+const SEED_WIRE_SERVICES = [
+  { id: 'w1', name: 'Reuters Global', slug: 'reuters', lastFetched: new Date().toISOString(), _count: { items: 124 }, status: 'Connected', description: 'Standard API for international narrative flow.' },
+  { id: 'w2', name: 'Associated Press', slug: 'ap', lastFetched: new Date().toISOString(), _count: { items: 89 }, status: 'Sync Error', description: 'High-velocity data item transmission.' },
+  { id: 'w3', name: 'NewsVortex Intelligence', slug: 'newsvortex', lastFetched: new Date().toISOString(), _count: { items: 12 }, status: 'Initialized', description: 'Automated diagnostic and vision detection layer.' }
+];
+
 // Initialize mocks if empty
 if (!getMockData('stations')) setMockData('stations', SEED_STATIONS);
 if (!getMockData('shows')) setMockData('shows', SEED_SHOWS);
 if (!getMockData('stories')) setMockData('stories', SEED_STORIES);
+if (!getMockData('wire_services')) setMockData('wire_services', SEED_WIRE_SERVICES);
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -115,11 +122,24 @@ api.interceptors.response.use(
       }
 
       if (url.includes('/wire/services')) {
-        return { data: { success: true, data: [
-          { id: 'w1', name: 'Reuters Global', slug: 'reuters', lastFetched: new Date().toISOString(), _count: { items: 124 } },
-          { id: 'w2', name: 'Associated Press', slug: 'ap', lastFetched: new Date().toISOString(), _count: { items: 89 } },
-          { id: 'w3', name: 'NewsVortex Intelligence', slug: 'newsvortex', lastFetched: new Date().toISOString(), _count: { items: 12 } }
-        ]}};
+        const services = getMockData('wire_services');
+        if (method === 'get') {
+          return { data: { success: true, data: services } };
+        }
+        if (method === 'post') {
+          const data = JSON.parse(config.data);
+          const newService = { 
+            ...data, 
+            id: `w${Date.now()}`, 
+            lastFetched: new Date().toISOString(), 
+            _count: { items: 0 },
+            status: 'Connected',
+            description: `Active intelligence stream from ${data.name}.`
+          };
+          const updated = [...services, newService];
+          setMockData('wire_services', updated);
+          return { data: { success: true, data: newService } };
+        }
       }
 
       if (url.includes('/wire/items')) {
