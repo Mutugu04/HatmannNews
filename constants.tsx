@@ -44,7 +44,7 @@ export const OS_GUIDES: Record<string, { steps: string[], command: string }> = {
   }
 };
 
-export const HNMS_TEMPLATE = {
+export const NEWSVORTEX_TEMPLATE = {
   projectName: "HATMANN NewsVortex",
   structure: `newsvortex/
 ├── apps/

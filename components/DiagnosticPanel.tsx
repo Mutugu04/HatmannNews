@@ -1,7 +1,8 @@
+
 import React, { useState, useRef } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { parseNodeVersion, parseNpmVersion, parsePnpmVersion, parsePgVersion, parseRedisVersion, compareVersions, fileToBase64 } from '../services/utils';
-import { MIN_NODE_VERSION, MIN_NPM_VERSION, MIN_PNPM_VERSION, MIN_PG_VERSION, MIN_REDIS_VERSION, HNMS_TEMPLATE } from '../constants';
+import { MIN_NODE_VERSION, MIN_NPM_VERSION, MIN_PNPM_VERSION, MIN_PG_VERSION, MIN_REDIS_VERSION, NEWSVORTEX_TEMPLATE } from '../constants';
 import { DiagnosticResult, ProjectBlueprint } from '../types';
 
 interface DiagnosticPanelProps {
@@ -76,7 +77,7 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
             {
               text: `Analyze this image. It contains either:
               1. A system runtime diagnostic (Node, pnpm, etc.).
-              2. A Project Scaffolding initialization.
+              2. A Project Scaffolding initialization for HATMANN NewsVortex.
               3. A Web App UI architectural request.
 
               If it's #2 or #3:
@@ -88,7 +89,7 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
                 * Features: Display 'Welcome, {user.firstName}', show 'User: {user.email}'.
                 * Interactions: Header button calls 'logout' from 'useAuth'.
                 * Refinement: Ensure 'apps/web/src/App.tsx' imports 'Dashboard' and 'Login' as default exports.
-              - Consistency Rule: Retain the full monorepo architecture. Ensure database packages (Prisma) and backend API (Express/Auth) are preserved in the blueprint.
+              - Consistency Rule: Retain the full monorepo architecture for NewsVortex. Ensure database packages (Prisma) and backend API (Express/Auth) are preserved in the blueprint.
               - Return the FULL content of all project files to maintain workspace integrity.
               
               Precision is mandatory. If diagnostic, leave blueprint null.`,
@@ -163,10 +164,10 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
           <h3 className="text-lg font-black text-white uppercase tracking-tighter">Sentinel Input</h3>
           <div className="flex gap-2">
              <button 
-              onClick={() => onScaffoldRequested(HNMS_TEMPLATE)}
+              onClick={() => onScaffoldRequested(NEWSVORTEX_TEMPLATE)}
               className="text-[9px] px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-full border border-indigo-500/30 font-black uppercase hover:bg-indigo-500/30 transition-all"
              >
-               HNMS Template
+               NewsVortex Template
              </button>
              <span className="text-[9px] px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full border border-blue-500/20 font-black uppercase">
                Vision 3.2
