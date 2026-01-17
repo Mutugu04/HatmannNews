@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 // @ts-ignore
@@ -42,8 +41,8 @@ export default function StoryEditor() {
     if (!isNew) {
       setTimeout(() => {
         setCollaborators([
-          { initials: 'SC', color: 'bg-emerald-500' },
-          { initials: 'JD', color: 'bg-blue-500' }
+          { initials: 'SC', color: 'bg-emerald-500 shadow-emerald-500/20' },
+          { initials: 'JD', color: 'bg-blue-600 shadow-blue-500/20' }
         ]);
         setPresenceMsg("sarah.c joined the narrative room");
         setTimeout(() => setPresenceMsg(null), 4000);
@@ -111,7 +110,6 @@ export default function StoryEditor() {
     setWordCount(words);
   };
 
-  // Use vortex service for creating or updating stories
   const handleSave = async (isAutoSave = false) => {
     if (!currentStation) return;
     try {
@@ -143,7 +141,6 @@ export default function StoryEditor() {
     }
   };
 
-  // Use vortex service for submitting story status
   const handleSubmit = async () => {
     try {
       setSaving(true);
@@ -159,66 +156,65 @@ export default function StoryEditor() {
 
   if (loading) {
     return (
-      <div className="p-12 text-center">
-        <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <div className="p-32 text-center">
+        <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-2xl shadow-primary-500/20"></div>
         <div className="font-black uppercase tracking-[0.5em] text-slate-400 text-xs">Synchronizing Archive...</div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 md:p-8 relative">
+    <div className="max-w-7xl mx-auto p-4 md:p-8 relative animate-in fade-in duration-700">
       {/* Real-time Presence Notification */}
       {presenceMsg && (
         <div className="fixed top-24 right-8 z-[200] animate-in slide-in-from-right-full fade-in duration-500">
-           <div className="bg-slate-900 text-white px-6 py-3 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-[10px] font-black uppercase tracking-widest">{presenceMsg}</span>
+           <div className="bg-slate-900 text-white px-8 py-4 rounded-[1.5rem] shadow-2xl border border-white/10 flex items-center gap-4">
+              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <span className="text-[11px] font-black uppercase tracking-widest">{presenceMsg}</span>
            </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="mb-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div className="mb-12 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <Link to="/stories" className="text-primary-600 hover:text-primary-700 font-black uppercase text-[10px] tracking-widest flex items-center gap-1 bg-primary-50 px-3 py-1 rounded-full transition-colors">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <Link to="/stories" className="text-primary-600 hover:text-white font-black uppercase text-[10px] tracking-widest flex items-center gap-2 bg-primary-50 hover:bg-primary-600 px-5 py-2 rounded-full border border-primary-100 transition-all">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
               Archives
             </Link>
             {lastSaved && (
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
                 Auto-synced: {lastSaved.toLocaleTimeString()}
               </span>
             )}
             
-            {/* Collaborative Presence Widget */}
             {!isNew && (
-              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-slate-100">
-                 <div className="flex -space-x-2">
+              <div className="flex items-center gap-4 ml-4 pl-6 border-l-2 border-slate-100">
+                 <div className="flex -space-x-3">
                     {collaborators.map((c, idx) => (
-                      <div key={idx} className={`w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-black text-white ${c.color} shadow-sm`}>
+                      <div key={idx} className={`w-8 h-8 rounded-full border-4 border-white flex items-center justify-center text-[10px] font-black text-white ${c.color} shadow-lg transition-transform hover:translate-y-[-4px]`}>
                         {c.initials}
                       </div>
                     ))}
                  </div>
-                 <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Live Presence</span>
+                 <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Active Cluster</span>
                  </div>
               </div>
             )}
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase leading-none">
+          <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">
             {isNew ? 'New Transmission' : 'Modify Narrative'}
           </h1>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-4">
           <button
             onClick={() => handleSave()}
             disabled={saving}
-            className="px-6 py-3 border-2 border-slate-200 text-slate-500 font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-slate-50 transition-all disabled:opacity-50"
+            className="px-8 py-4 bg-white border-2 border-slate-200 text-slate-500 font-black uppercase tracking-widest text-[11px] rounded-[1.5rem] hover:bg-slate-50 hover:border-slate-300 transition-all disabled:opacity-50"
           >
             {saving ? 'Syncing...' : 'Save Draft'}
           </button>
@@ -226,7 +222,7 @@ export default function StoryEditor() {
             <button
               onClick={handleSubmit}
               disabled={saving}
-              className="px-8 py-3 bg-slate-900 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-slate-800 transition-all shadow-xl active:scale-95 disabled:opacity-50"
+              className="px-10 py-4 bg-slate-900 text-white font-black uppercase tracking-widest text-[11px] rounded-[1.5rem] hover:bg-slate-800 transition-all shadow-2xl active:scale-95 disabled:opacity-50"
             >
               Submit for Approval
             </button>
@@ -234,55 +230,55 @@ export default function StoryEditor() {
           <button
             onClick={() => handleSave()}
             disabled={saving}
-            className="px-8 py-3 bg-primary-600 text-white font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-primary-700 transition-all shadow-xl shadow-primary-600/20 active:scale-95 disabled:opacity-50"
+            className="px-10 py-4 bg-primary-600 text-white font-black uppercase tracking-widest text-[11px] rounded-[1.5rem] hover:bg-primary-500 transition-all shadow-2xl shadow-primary-600/30 active:scale-95 disabled:opacity-50"
           >
             Broadcast Save
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-8 space-y-8">
-          <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-2xl border border-slate-100">
-            <div className="space-y-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8 space-y-10">
+          <div className="bg-white p-10 md:p-16 rounded-[4rem] shadow-2xl border border-slate-100">
+            <div className="space-y-12">
               <div className="group">
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4 group-focus-within:text-primary-500 transition-colors">Headline Intelligence</label>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-6 group-focus-within:text-primary-600 transition-colors">Narrative Headline</label>
                 <input
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="The transmission needs a title..."
-                  className="w-full text-4xl font-black text-slate-900 border-0 border-b-2 border-slate-100 focus:border-primary-500 focus:ring-0 transition-all p-0 pb-4 placeholder:text-slate-100"
+                  placeholder="Initialize headline..."
+                  className="w-full text-5xl font-black text-slate-900 border-0 border-b-[4px] border-slate-50 focus:border-primary-600 focus:ring-0 transition-all p-0 pb-6 placeholder:text-slate-100"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mb-4">Narrative Body</label>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] mb-6">Transmission Body</label>
                 <RichTextEditor
                   content={content}
                   onChange={handleEditorChange}
-                  placeholder="Start writing the narrative here..."
+                  placeholder="Compose narrative intelligence..."
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="lg:col-span-4 space-y-8">
-          <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 sticky top-8">
-            <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.3em] mb-8 border-b border-slate-50 pb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-primary-600"></span>
-              Transmission Metadata
+        <div className="lg:col-span-4 space-y-10">
+          <div className="bg-white p-10 rounded-[3.5rem] shadow-xl border border-slate-100 sticky top-10">
+            <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.4em] mb-10 border-b-2 border-slate-50 pb-6 flex items-center gap-3">
+              <span className="w-2.5 h-2.5 rounded-full bg-primary-600 shadow-[0_0_10px_rgba(2,132,199,0.5)]"></span>
+              Node Metadata
             </h3>
 
-            <div className="space-y-8">
+            <div className="space-y-10">
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Target Category</label>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Target Channel</label>
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-[11px] font-black text-slate-700 focus:ring-4 focus:ring-primary-500/10 appearance-none transition-all cursor-pointer"
+                  className="w-full bg-slate-50 border-0 rounded-[1.5rem] px-7 py-5 text-[12px] font-black text-slate-900 focus:ring-4 focus:ring-primary-600/10 appearance-none transition-all cursor-pointer shadow-inner"
                 >
                   <option value="">UNCATEGORIZED</option>
                   {categories.map((cat) => (
@@ -292,70 +288,59 @@ export default function StoryEditor() {
               </div>
 
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Intelligence Source</label>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Source Origin</label>
                 <input
                   type="text"
                   value={source}
                   onChange={(e) => setSource(e.target.value)}
-                  placeholder="Agency or individual..."
-                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-[11px] font-black text-slate-700 focus:ring-4 focus:ring-primary-500/10 transition-all placeholder:text-slate-300"
+                  placeholder="Agency / Unit..."
+                  className="w-full bg-slate-50 border-0 rounded-[1.5rem] px-7 py-5 text-[12px] font-black text-slate-900 focus:ring-4 focus:ring-primary-600/10 transition-all placeholder:text-slate-200 shadow-inner"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
-                  <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Transmission Priority</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {['LOW', 'NORMAL', 'HIGH', 'URGENT'].map(p => (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => setPriority(p)}
-                        className={`py-3 rounded-xl text-[9px] font-black uppercase tracking-wider transition-all border-2 ${
-                          priority === p
-                            ? 'bg-primary-600 text-white border-primary-600 shadow-lg shadow-primary-600/20'
-                            : 'bg-white text-slate-400 border-slate-100 hover:border-slate-200'
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
+              <div>
+                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6">Priority Level</label>
+                <div className="grid grid-cols-2 gap-3">
+                  {['LOW', 'NORMAL', 'HIGH', 'URGENT'].map(p => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => setPriority(p)}
+                      className={`py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all border-2 ${
+                        priority === p
+                          ? 'bg-primary-600 text-white border-primary-600 shadow-xl shadow-primary-600/30'
+                          : 'bg-white text-slate-400 border-slate-100 hover:border-slate-200'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-10 border-t-2 border-slate-50">
+                <div className="flex items-center justify-between text-[11px] font-black text-slate-500 mb-3 uppercase tracking-widest">
+                  <span>Intelligence Vol.</span>
+                  <span className="text-slate-900 mono">{wordCount} W</span>
+                </div>
+                <div className="w-full h-3 bg-slate-50 rounded-full overflow-hidden border border-slate-100">
+                  <div
+                    className="h-full bg-primary-600 transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(2,132,199,0.4)]"
+                    style={{ width: `${Math.min(100, wordCount / 12)}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center mt-6">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Status</span>
+                    <span className="text-[11px] font-black text-slate-900 uppercase tracking-tight">{status}</span>
+                  </div>
+                  <div className="flex flex-col text-right">
+                    <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Frequency</span>
+                    <span className="text-[11px] font-black text-primary-600 uppercase tracking-tight">{currentStation?.callSign}</span>
                   </div>
                 </div>
               </div>
-
-              <div className="pt-8 border-t border-slate-50">
-                <div className="flex items-center justify-between text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">
-                  <span>Intelligence Volume</span>
-                  <span className="text-slate-900">{wordCount} Words</span>
-                </div>
-                <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary-500 transition-all duration-700 ease-out shadow-[0_0_10px_rgba(14,165,233,0.5)]"
-                    style={{ width: `${Math.min(100, wordCount / 10)}%` }}
-                  />
-                </div>
-                <div className="flex justify-between items-center mt-3 text-[8px] font-black text-slate-300 uppercase tracking-widest">
-                  <span>Status: {status}</span>
-                  <span>Station: {currentStation?.callSign}</span>
-                </div>
-              </div>
             </div>
-          </div>
-
-          <div className="bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden group">
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-xl bg-primary-600/30 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                </div>
-                <h4 className="text-white font-black uppercase text-[10px] tracking-widest">Sentinel Note</h4>
-              </div>
-              <p className="text-slate-400 text-[10px] leading-relaxed font-bold italic">
-                "Real-time collaboration is active. All narrative streams are synchronized via the WebSocket cluster."
-              </p>
-            </div>
-            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary-600/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000"></div>
           </div>
         </div>
       </div>

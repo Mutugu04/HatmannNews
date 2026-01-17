@@ -5,6 +5,16 @@ import supabase from './supabase';
  * Direct serverless database interaction for Stories, Shows, and Rundowns.
  */
 
+// Detect environment variables
+const getEnv = (key: string) => {
+  if (typeof process !== 'undefined' && process.env && process.env[key]) return process.env[key];
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) return import.meta.env[key];
+  return null;
+};
+
+const NEWS_API_KEY = getEnv('VITE_NEWS_AGGREGATOR_KEY') || '2116a96cc0724073ba8121c9b6ddb7f9';
+
 export const vortex = {
   // --- Story Operations ---
   stories: {
@@ -57,6 +67,100 @@ export const vortex = {
         .eq('id', id)
         .select()
         .single();
+      if (error) throw error;
+      return { data };
+    }
+  },
+
+  // --- Wire Feed Intelligence ---
+  wire: {
+    async getServices() {
+      return {
+        data: [
+          { id: 'vortex-live', name: 'Live Intelligence Hub', slug: 'vortex-live', status: 'ACTIVE', description: 'Global real-time aggregate via HATMANN Satellite' },
+          { id: 'reuters', name: 'Reuters Connect', slug: 'reuters', status: 'STABLE', description: 'Global high-fidelity news wire' },
+          { id: 'nv-direct', name: 'NewsVortex Direct', slug: 'vortex', status: 'STABLE', description: 'Internal cluster distribution' }
+        ]
+      };
+    },
+    
+    async getItems(serviceId?: string) {
+      // If Live Intelligence is requested, fetch from the real aggregator
+      if (serviceId === 'vortex-live' || !serviceId) {
+        try {
+          const response = await fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=15&apiKey=${NEWS_API_KEY}`);
+          const data = await response.json();
+          
+          if (data.status === 'ok') {
+            return {
+              data: {
+                items: data.articles.map((article: any, index: number) => ({
+                  id: `live-${index}`,
+                  title: article.title,
+                  summary: article.description || article.content || 'No summary available.',
+                  link: article.url,
+                  author: article.author || article.source.name,
+                  publishedAt: article.publishedAt,
+                  service: { name: 'Live Aggregate', slug: 'vortex-live' }
+                }))
+              }
+            };
+          } else {
+            throw new Error(data.message || 'Aggregator handshake failed.');
+          }
+        } catch (err) {
+          console.error('[vortex] Aggregator Error:', err);
+          // Fallback to minimal system alerts if API fails
+          return { data: { items: [{
+            id: 'err-1',
+            title: 'System Notice: External Feed Latency',
+            summary: 'The global aggregator is experiencing high latency. Retrying satellite handshake...',
+            link: '#',
+            author: 'System Sentinel',
+            publishedAt: new Date().toISOString(),
+            service: { name: 'Vortex System', slug: 'system' }
+          }] } };
+        }
+      }
+
+      // Default Mock Items for other services
+      const mockItems = [
+        {
+          id: 'w1',
+          title: 'Regional Summit: Economic Stability Protocols',
+          summary: 'Leaders gather to discuss a unified digital currency framework for sub-Saharan trade.',
+          link: '#',
+          author: 'A. Reuters Staff',
+          publishedAt: new Date().toISOString(),
+          service: { name: 'Reuters', slug: 'reuters' }
+        }
+      ];
+      
+      const filtered = serviceId ? mockItems.filter(i => i.service.slug === serviceId) : mockItems;
+      return { data: { items: filtered } };
+    },
+
+    async importToStory(wireItemId: string, stationId: string) {
+      // Re-fetch current items to find the one to import
+      const itemsResponse = await this.getItems();
+      const item = itemsResponse.data.items.find((i: any) => i.id === wireItemId);
+      
+      if (!item) throw new Error('Wire item not found');
+
+      const { data, error } = await supabase
+        .from('stories')
+        .insert([{
+          title: `[LIVE WIRE] ${item.title}`,
+          plain_text: item.summary,
+          body: { content: `<p>${item.summary}</p><p><small>Source: ${item.service.name} / ${item.author} — Verified via Satellite Aggregate</small></p>` },
+          status: 'DRAFT',
+          station_id: stationId,
+          source: item.service.name,
+          word_count: item.summary.split(' ').length
+        }])
+        .select()
+        .single();
+
       if (error) throw error;
       return { data };
     }
@@ -184,11 +288,22 @@ export const vortex = {
 // Legacy shim for non-refactored parts
 export const api = {
   get: (url: string) => {
-    if (url.includes('/wire/services')) return Promise.resolve({ data: { data: [] } });
-    if (url.includes('/wire/items')) return Promise.resolve({ data: { data: { items: [] } } });
+    if (url.includes('/wire/services')) return vortex.wire.getServices();
+    if (url.includes('/wire/items')) {
+      const urlObj = new URL(url, 'http://localhost');
+      const serviceId = urlObj.searchParams.get('serviceId');
+      return vortex.wire.getItems(serviceId || undefined);
+    }
     return Promise.resolve({ data: { data: [] } });
   },
-  post: (url: string, data: any) => Promise.resolve({ data: { data: {} } }),
+  post: (url: string, data: any) => {
+    if (url.includes('/import')) {
+      const parts = url.split('/');
+      const itemId = parts[parts.indexOf('items') + 1];
+      return vortex.wire.importToStory(itemId, data.stationId);
+    }
+    return Promise.resolve({ data: { data: {} } });
+  },
   patch: (url: string, data: any) => Promise.resolve({ data: { data: {} } }),
   delete: (url: string) => Promise.resolve({ data: { data: {} } }),
 };

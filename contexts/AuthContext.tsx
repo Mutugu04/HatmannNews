@@ -13,6 +13,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -24,8 +25,15 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const mapSessionUser = (sessionUser: any): User => ({
+    id: sessionUser.id,
+    email: sessionUser.email || '',
+    firstName: sessionUser.user_metadata?.first_name || 'System',
+    lastName: sessionUser.user_metadata?.last_name || 'User',
+  });
+
   useEffect(() => {
-    // Initial session check
+    // Initial session recovery
     const initAuth = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -33,15 +41,10 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
         
         if (session) {
           setToken(session.access_token);
-          setUser({
-            id: session.user.id,
-            email: session.user.email || '',
-            firstName: session.user.user_metadata?.first_name || 'System',
-            lastName: session.user.user_metadata?.last_name || 'User',
-          });
+          setUser(mapSessionUser(session.user));
         }
       } catch (err) {
-        console.error('[NewsVortex] Auth Initialization Error:', err);
+        console.error('[NewsVortex] Session recovery failed:', err);
       } finally {
         setIsLoading(false);
       }
@@ -49,26 +52,23 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
 
     initAuth();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(`[NewsVortex] Auth State Change: ${event}`);
+      
       if (session) {
         setToken(session.access_token);
-        setUser({
-          id: session.user.id,
-          email: session.user.email || '',
-          firstName: session.user.user_metadata?.first_name || 'System',
-          lastName: session.user.user_metadata?.last_name || 'User',
-        });
-        localStorage.setItem('token', session.access_token);
+        setUser(mapSessionUser(session.user));
       } else {
         setToken(null);
         setUser(null);
-        localStorage.removeItem('token');
       }
+      
       setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -76,28 +76,40 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
       email,
       password,
     });
+    if (error) throw error;
+    if (!data.session) throw new Error('Authentication failed: No session established.');
+  };
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    if (data.session) {
-      setToken(data.session.access_token);
-      setUser({
-        id: data.user.id,
-        email: data.user.email || '',
-        firstName: data.user.user_metadata?.first_name || 'System',
-        lastName: data.user.user_metadata?.last_name || 'User',
-      });
-    }
+  const register = async (email: string, password: string, firstName: string, lastName: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        }
+      }
+    });
+    if (error) throw error;
+    if (!data.user) throw new Error('User creation failed.');
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    setIsLoading(true);
+    try {
+      await supabase.auth.signOut();
+      setToken(null);
+      setUser(null);
+    } catch (err) {
+      console.error('[NewsVortex] Signout error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, isLoading, login, register, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useStation, Station } from '../contexts/StationContext';
@@ -48,8 +49,10 @@ export default function Settings() {
   const loadWireServices = async () => {
     try {
       const response = await api.get('/wire/services');
-      // Fix: cast to any to handle TypeScript union type mismatch from mock API shim
-      setWireServices((response.data.data as any) || []);
+      // @ts-ignore - Bypass union type mismatch from mock shim
+      // Cast response to any to fix property 'data' does not exist error.
+      // Corrected access: /wire/services returns { data: WireService[] }, not nested.
+      setWireServices(((response as any).data as any) || []);
     } catch (error) {
       console.error('Failed to load wire services');
     }

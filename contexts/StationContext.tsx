@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '../services/api';
 import { useAuth } from './AuthContext';
@@ -59,8 +60,9 @@ export function StationProvider({ children }: { children?: ReactNode }) {
     try {
       setIsLoading(true);
       const response = await api.get('/stations/my-stations').catch(() => ({ data: { data: FALLBACK_STATIONS } }));
-      // Cast to any to avoid union type mismatch from mock API shim
-      const stationList = (response.data.data as any) || FALLBACK_STATIONS;
+      // @ts-ignore - Bypass union type mismatch from mock shim
+      // Cast response to any to fix property 'data' does not exist error.
+      const stationList = ((response as any).data.data as any) || FALLBACK_STATIONS;
       setStations(stationList);
 
       const savedStationId = localStorage.getItem('currentStationId');

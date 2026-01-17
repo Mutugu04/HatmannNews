@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
@@ -51,8 +52,9 @@ export default function Shows() {
     try {
       setLoading(true);
       const response = await api.get(`/rundown/shows?stationId=${currentStation.id}`);
-      // Fix: cast to any to resolve union type mismatch from mock API shim
-      const showList = (response.data.data as any) || [];
+      // @ts-ignore - Bypass union type mismatch from mock shim
+      // Cast response to any to fix property 'data' does not exist error.
+      const showList = ((response as any).data.data as any) || [];
       setShows(showList);
       if ((showList as any[]).length > 0 && !selectedShow) {
         setSelectedShow(showList[0]);
@@ -67,8 +69,9 @@ export default function Shows() {
   const loadInstances = async (showId: string) => {
     try {
       const response = await api.get(`/rundown/shows/${showId}/instances`);
-      // Fix: cast to any to handle union type mismatch for state update
-      setInstances((response.data.data as any) || []);
+      // @ts-ignore - Bypass union type mismatch from mock shim
+      // Cast response to any to fix property 'data' does not exist error.
+      setInstances(((response as any).data.data as any) || []);
     } catch (error) {
       console.error('Failed to load instances:', error);
     }
