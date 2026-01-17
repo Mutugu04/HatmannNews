@@ -1,5 +1,5 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import supabase from '../services/supabase';
 
 interface User {
   id: string;
@@ -21,64 +21,72 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children?: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const validateToken = () => {
-      const storedToken = localStorage.getItem('token');
-      const storedUser = localStorage.getItem('user');
-      
-      if (storedToken && storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-          setToken(storedToken);
-        } catch {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setToken(null);
-          setUser(null);
-        }
+    // Initial session check
+    const initAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setToken(session.access_token);
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          firstName: session.user.user_metadata?.first_name || 'System',
+          lastName: session.user.user_metadata?.last_name || 'User',
+        });
       }
       setIsLoading(false);
     };
-    
-    // Simulate API delay
-    const timer = setTimeout(validateToken, 500);
-    return () => clearTimeout(timer);
+
+    initAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setToken(session.access_token);
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          firstName: session.user.user_metadata?.first_name || 'System',
+          lastName: session.user.user_metadata?.last_name || 'User',
+        });
+        localStorage.setItem('token', session.access_token);
+      } else {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem('token');
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Simulate API call
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (email === 'test@example.com' && password === 'password123') {
-          const mockUser: User = {
-            id: '1',
-            email: 'test@example.com',
-            firstName: 'Test',
-            lastName: 'User'
-          };
-          const mockToken = 'mock-jwt-token-123';
-          
-          localStorage.setItem('token', mockToken);
-          localStorage.setItem('user', JSON.stringify(mockUser));
-          
-          setToken(mockToken);
-          setUser(mockUser);
-          resolve();
-        } else {
-          reject(new Error('Invalid email or password'));
-        }
-      }, 800);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (data.session) {
+      setToken(data.session.access_token);
+      setUser({
+        id: data.user.id,
+        email: data.user.email || '',
+        firstName: data.user.user_metadata?.first_name || 'System',
+        lastName: data.user.user_metadata?.last_name || 'User',
+      });
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    await supabase.auth.signOut();
   };
 
   return (

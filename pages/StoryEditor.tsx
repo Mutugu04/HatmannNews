@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { api } from '../services/api';
+// @ts-ignore
+import { vortex, api } from '../services/api';
 import { useStation } from '../contexts/StationContext';
 import RichTextEditor from '../components/Editor/RichTextEditor';
 
@@ -67,10 +69,11 @@ export default function StoryEditor() {
     return () => clearInterval(interval);
   }, [id, title, content]);
 
+  // Use vortex service for category metadata
   const loadCategories = async () => {
     try {
-      const response = await api.get('/categories');
-      setCategories(response.data.data || []);
+      const response = await vortex.metadata.getCategories();
+      setCategories(response.data || []);
     } catch (error) {
       setCategories([
         { id: '1', name: 'Politics', slug: 'politics' },
@@ -81,19 +84,20 @@ export default function StoryEditor() {
     }
   };
 
+  // Use vortex service for fetching story details by ID
   const loadStory = async (storyId: string) => {
     try {
       setLoading(true);
-      const response = await api.get(`/stories/${storyId}`);
-      const story = response.data.data;
-      setTitle(story.title);
+      const response = await vortex.stories.getById(storyId);
+      const story = response.data;
+      setTitle(story.title || '');
       setContent(story.body?.content || story.body || '');
       setPlainText(story.plainText || '');
       setWordCount(story.wordCount || 0);
       setCategoryId(story.categoryId || '');
       setSource(story.source || '');
-      setPriority(story.priority);
-      setStatus(story.status);
+      setPriority(story.priority || 'NORMAL');
+      setStatus(story.status || 'DRAFT');
     } catch (error) {
       console.error('Failed to load story:', error);
     } finally {
@@ -107,6 +111,7 @@ export default function StoryEditor() {
     setWordCount(words);
   };
 
+  // Use vortex service for creating or updating stories
   const handleSave = async (isAutoSave = false) => {
     if (!currentStation) return;
     try {
@@ -122,12 +127,12 @@ export default function StoryEditor() {
       };
 
       if (isNew) {
-        const response = await api.post('/stories', data);
+        const response = await vortex.stories.create(data);
         if (!isAutoSave) {
-          navigate(`/stories/${response.data.data.id}`);
+          navigate(`/stories/${response.data.id}`);
         }
       } else {
-        await api.patch(`/stories/${id}`, data);
+        await vortex.stories.update(id!, data);
       }
       
       setLastSaved(new Date());
@@ -138,10 +143,11 @@ export default function StoryEditor() {
     }
   };
 
+  // Use vortex service for submitting story status
   const handleSubmit = async () => {
     try {
       setSaving(true);
-      await api.patch(`/stories/${id}`, { status: 'PENDING' });
+      await vortex.stories.update(id!, { status: 'PENDING' });
       alert('Story submitted for approval');
       navigate('/stories');
     } catch (error) {

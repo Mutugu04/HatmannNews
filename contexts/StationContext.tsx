@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '../services/api';
 import { useAuth } from './AuthContext';
@@ -88,11 +89,17 @@ export function StationProvider({ children }: { children?: ReactNode }) {
   const addStation = async (stationData: Omit<Station, 'id'>) => {
     try {
       const response = await api.post('/stations', stationData);
-      const newStation = response.data.data;
-      setStations(prev => [...prev, newStation]);
+      // Cast the response data to Station to satisfy setStations state type
+      const newStation = response.data.data as Station;
+      if (newStation && typeof newStation === 'object' && 'id' in newStation) {
+        setStations(prev => [...prev, newStation]);
+      } else {
+         // Fallback if API returned something unexpected
+         throw new Error('Invalid station data returned');
+      }
     } catch (error) {
       // Fallback for mock environment
-      const newStation = { ...stationData, id: `st-${Date.now()}` };
+      const newStation: Station = { ...stationData, id: `st-${Date.now()}` };
       setStations(prev => [...prev, newStation]);
       
       // Update session storage so it persists if using the mock api

@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import { vortex } from '../services/api';
 import { useStation } from '../contexts/StationContext';
 
 interface Story {
   id: string;
   title: string;
   status: string;
-  wordCount: number;
-  createdAt: string;
+  word_count: number;
+  created_at: string;
   author: {
-    firstName: string;
-    lastName: string;
-  };
-}
-
-interface StoriesResponse {
-  success: boolean;
-  data: {
-    stories: Story[];
-    total: number;
-    page: number;
-    totalPages: number;
+    first_name: string;
+    last_name: string;
   };
 }
 
@@ -40,10 +30,10 @@ export default function Stories() {
   const loadStories = async () => {
     try {
       setLoading(true);
-      const response = await api.get<StoriesResponse>(`/stories?stationId=${currentStation?.id}`);
-      setStories(response.data.data.stories || []);
+      const response = await vortex.stories.getAll({ stationId: currentStation?.id });
+      setStories(response.data.stories as any || []);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to load stories');
+      setError(err.message || 'Failed to load stories');
     } finally {
       setLoading(false);
     }
@@ -104,13 +94,13 @@ export default function Stories() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-500 font-medium">
-                    {story.wordCount}
+                    {story.word_count || 0}
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-700 font-bold">
-                    {story.author?.firstName} {story.author?.lastName}
+                    {story.author?.first_name} {story.author?.last_name}
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-500">
-                    {new Date(story.createdAt).toLocaleDateString()}
+                    {new Date(story.created_at).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
