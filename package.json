@@ -21,7 +21,10 @@
     "@tiptap/extension-character-count": "2.11.5",
     "@tiptap/extension-highlight": "2.11.5",
     "@tiptap/extension-underline": "2.11.5",
-    "socket.io-client": "4.8.1"
+    "socket.io-client": "4.8.1",
+    "vite": "^7.3.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@tailwindcss/vite": "^4.1.18"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
