@@ -27,17 +27,24 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
   useEffect(() => {
     // Initial session check
     const initAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setToken(session.access_token);
-        setUser({
-          id: session.user.id,
-          email: session.user.email || '',
-          firstName: session.user.user_metadata?.first_name || 'System',
-          lastName: session.user.user_metadata?.last_name || 'User',
-        });
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        
+        if (session) {
+          setToken(session.access_token);
+          setUser({
+            id: session.user.id,
+            email: session.user.email || '',
+            firstName: session.user.user_metadata?.first_name || 'System',
+            lastName: session.user.user_metadata?.last_name || 'User',
+          });
+        }
+      } catch (err) {
+        console.error('[NewsVortex] Auth Initialization Error:', err);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     initAuth();

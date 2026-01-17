@@ -43,7 +43,8 @@ export default function WireFeed() {
   const loadServices = async () => {
     try {
       const response = await api.get('/wire/services');
-      setServices(response.data.data || []);
+      // Fix: cast to any to resolve TypeScript union type mismatch from mock API shim
+      setServices((response.data.data as any) || []);
     } catch (error) {
       console.error('Failed to load services:', error);
     }
@@ -57,7 +58,9 @@ export default function WireFeed() {
         url += `&serviceId=${selectedService}`;
       }
       const response = await api.get(url);
-      setItems(response.data.data.items || []);
+      // Fix: cast to any to access items property on inconsistent mock response
+      const resData = response.data.data as any;
+      setItems(resData.items || []);
     } catch (error) {
       console.error('Failed to load items:', error);
     } finally {
@@ -69,7 +72,8 @@ export default function WireFeed() {
     setFetching(true);
     for (const service of services) {
       try {
-        await api.post(`/wire/services/${service.id}/fetch`);
+        // Fix: provide required second argument for api.post mock call
+        await api.post(`/wire/services/${service.id}/fetch`, {});
       } catch (error) {
         console.error(`Failed to fetch ${service.name}:`, error);
       }
@@ -88,7 +92,9 @@ export default function WireFeed() {
       const response = await api.post(`/wire/items/${itemId}/import`, {
         stationId: currentStation.id,
       });
-      navigate(`/stories/${response.data.data.id}`);
+      // Fix: cast to any to access id property on mock API response
+      const resData = response.data.data as any;
+      navigate(`/stories/${resData.id}`);
     } catch (error) {
       console.error('Failed to import:', error);
       alert('Failed to import story');

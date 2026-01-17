@@ -22,9 +22,15 @@ function ProtectedRoute({ children }: { children?: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] animate-pulse">Node Sync...</div>
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary-600/20 rounded-full"></div>
+            <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] animate-pulse">Synchronizing Cluster</div>
+            <div className="text-[8px] font-bold text-slate-700 uppercase tracking-widest mt-2">Connecting to NewsVortex Node...</div>
+          </div>
         </div>
       </div>
     );
@@ -46,8 +52,13 @@ function AppRoutes() {
   
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-primary-600 font-black uppercase tracking-[0.5em] animate-pulse">
-        Synchronizing Engine...
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+          <div className="text-[10px] font-black text-primary-600 uppercase tracking-[0.5em] animate-pulse">
+            Booting System...
+          </div>
+        </div>
       </div>
     );
   }
@@ -67,18 +78,19 @@ function AppRoutes() {
       <Route path="/docs" element={<ProtectedRoute><Documentation /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   );
 }
 
 export default function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <SocketProvider>
+    <AuthProvider>
+      <SocketProvider>
+        <Router>
           <AppRoutes />
-        </SocketProvider>
-      </AuthProvider>
-    </Router>
+        </Router>
+      </SocketProvider>
+    </AuthProvider>
   );
 }

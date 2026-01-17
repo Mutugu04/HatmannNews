@@ -48,7 +48,8 @@ export default function Settings() {
   const loadWireServices = async () => {
     try {
       const response = await api.get('/wire/services');
-      setWireServices(response.data.data || []);
+      // Fix: cast to any to handle TypeScript union type mismatch from mock API shim
+      setWireServices((response.data.data as any) || []);
     } catch (error) {
       console.error('Failed to load wire services');
     }

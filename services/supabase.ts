@@ -1,13 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Hardcoded credentials for immediate stability as requested.
-const supabaseUrl = 'https://vpavvvcpjnjwpdpibybh.supabase.co';
-const supabaseKey = 'sb_publishable_wb8k9G_4vHtNSMZ5syCgaQ_c7s3WK4S';
+// Environment variables are prioritized, with hardcoded values as emergency fallbacks
+const supabaseUrl = (typeof process !== 'undefined' && process.env.VITE_SUPABASE_URL) || 'https://vpavvvcpjnjwpdpibybh.supabase.co';
+const supabaseKey = (typeof process !== 'undefined' && process.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY) || 'sb_publishable_wb8k9G_4vHtNSMZ5syCgaQ_c7s3WK4S';
 
 if (!supabaseUrl || !supabaseKey) {
-  console.warn(
-    '[NewsVortex] Supabase configuration missing.'
-  );
+  console.error('[NewsVortex] Supabase credentials missing. Check your environment variables.');
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);

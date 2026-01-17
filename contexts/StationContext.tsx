@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '../services/api';
 import { useAuth } from './AuthContext';
@@ -60,11 +59,13 @@ export function StationProvider({ children }: { children?: ReactNode }) {
     try {
       setIsLoading(true);
       const response = await api.get('/stations/my-stations').catch(() => ({ data: { data: FALLBACK_STATIONS } }));
-      const stationList = response.data.data || FALLBACK_STATIONS;
+      // Cast to any to avoid union type mismatch from mock API shim
+      const stationList = (response.data.data as any) || FALLBACK_STATIONS;
       setStations(stationList);
 
       const savedStationId = localStorage.getItem('currentStationId');
-      const saved = stationList.find((s: Station) => s.id === savedStationId);
+      // Cast stationList to any[] for find operation to resolve union type conflict
+      const saved = (stationList as any[]).find((s: Station) => s.id === savedStationId);
       
       const initialStation = saved || stationList[0] || null;
       setCurrentStation(initialStation);

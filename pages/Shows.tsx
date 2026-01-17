@@ -51,9 +51,10 @@ export default function Shows() {
     try {
       setLoading(true);
       const response = await api.get(`/rundown/shows?stationId=${currentStation.id}`);
-      const showList = response.data.data || [];
+      // Fix: cast to any to resolve union type mismatch from mock API shim
+      const showList = (response.data.data as any) || [];
       setShows(showList);
-      if (showList.length > 0 && !selectedShow) {
+      if ((showList as any[]).length > 0 && !selectedShow) {
         setSelectedShow(showList[0]);
       }
     } catch (error) {
@@ -66,7 +67,8 @@ export default function Shows() {
   const loadInstances = async (showId: string) => {
     try {
       const response = await api.get(`/rundown/shows/${showId}/instances`);
-      setInstances(response.data.data || []);
+      // Fix: cast to any to handle union type mismatch for state update
+      setInstances((response.data.data as any) || []);
     } catch (error) {
       console.error('Failed to load instances:', error);
     }
@@ -100,7 +102,9 @@ export default function Shows() {
         endTime: endTime.toISOString(),
       });
       
-      const rundownId = response.data.data.rundown?.id;
+      // Fix: cast to any to access rundown property on dynamic mock response
+      const resData = response.data.data as any;
+      const rundownId = resData.rundown?.id;
       if (rundownId) {
         navigate(`/rundown/${rundownId}`);
       } else {

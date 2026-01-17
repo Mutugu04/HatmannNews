@@ -35,7 +35,9 @@ export default function SidePage() {
         url += `&status=${filter}`;
       }
       const response = await api.get(url);
-      setStories(response.data.data.stories || []);
+      // Fix: cast to any to handle inconsistent mock API response structure and property access
+      const resData = response.data.data as any;
+      setStories(resData.stories || []);
     } catch (error) {
       console.error('Failed to load stories:', error);
     } finally {
