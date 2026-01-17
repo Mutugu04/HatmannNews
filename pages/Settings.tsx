@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useStation, Station } from '../contexts/StationContext';
@@ -282,7 +281,38 @@ export default function Settings() {
           )}
 
           {activeTab === 'integrations' && (
-            <div className="space-y-10 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div className="space-y-12 animate-in fade-in slide-in-from-right-4 duration-500">
+              {/* Cloud Infrastructure Configuration */}
+              <section>
+                <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-8 flex items-center gap-3">
+                  <span className="w-1.5 h-6 bg-sky-500 rounded-full"></span>
+                  Cloud Infrastructure
+                </h2>
+                <div className="grid gap-6">
+                  <IntegrationCard 
+                    name="Supabase Cloud" 
+                    status="Edge Connected" 
+                    description="Enterprise PostgreSQL Database & JWT Auth layer."
+                    icon={
+                      <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
+                        <svg className="w-6 h-6 text-emerald-600" viewBox="0 0 24 24" fill="currentColor"><path d="M11.666 0L5.333 11.231H0L12.334 24l6.333-11.231h5.333z"/></svg>
+                      </div>
+                    }
+                  />
+                  <IntegrationCard 
+                    name="Vercel Edge" 
+                    status="Deployment Nominal" 
+                    description="Globally distributed frontend orchestration & SPA routing."
+                    icon={
+                      <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
+                        <svg className="w-5 h-5 text-white" viewBox="0 0 512 512" fill="currentColor"><path d="M256 48l240 416H16z"/></svg>
+                      </div>
+                    }
+                  />
+                </div>
+              </section>
+
+              {/* Wire Services */}
               <section>
                 <div className="flex justify-between items-center mb-8">
                   <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight flex items-center gap-3">

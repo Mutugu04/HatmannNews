@@ -14,16 +14,14 @@
     "react-router-dom": "^7.2.0",
     "axios": "^1.7.9",
     "@google/genai": "^1.35.0",
+    "@supabase/supabase-js": "2.48.1",
     "@tiptap/react": "2.11.5",
     "@tiptap/starter-kit": "2.11.5",
     "@tiptap/extension-placeholder": "2.11.5",
     "@tiptap/extension-character-count": "2.11.5",
     "@tiptap/extension-highlight": "2.11.5",
     "@tiptap/extension-underline": "2.11.5",
-    "socket.io-client": "4.8.1",
-    "@tailwindcss/vite": "^4.1.18",
-    "tailwindcss": "^4.1.18"
-
+    "socket.io-client": "4.8.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
