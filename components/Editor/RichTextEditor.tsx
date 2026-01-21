@@ -43,76 +43,94 @@ export default function RichTextEditor({
     <div className="border rounded-lg overflow-hidden">
       {/* Toolbar */}
       {!readOnly && (
-        <div className="bg-gray-50 border-b p-2 flex flex-wrap gap-1">
+        <div className="bg-gray-50 border-b p-2 flex flex-wrap gap-1" role="toolbar" aria-label="Text formatting options">
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('bold') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('bold') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Bold"
+            aria-pressed={editor.isActive('bold')}
           >
             <strong>B</strong>
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('italic') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('italic') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Italic"
+            aria-pressed={editor.isActive('italic')}
           >
             <em>I</em>
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('underline') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('underline') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Underline"
+            aria-pressed={editor.isActive('underline')}
           >
             <u>U</u>
           </button>
-          
-          <span className="border-l mx-2" />
-          
+
+          <span className="border-l mx-2" aria-hidden="true" />
+
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            className={`px-2 py-1 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('heading', { level: 2 }) ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Heading level 2"
+            aria-pressed={editor.isActive('heading', { level: 2 })}
           >
             H2
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            className={`px-2 py-1 rounded ${editor.isActive('heading', { level: 3 }) ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('heading', { level: 3 }) ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Heading level 3"
+            aria-pressed={editor.isActive('heading', { level: 3 })}
           >
             H3
           </button>
-          
-          <span className="border-l mx-2" />
-          
+
+          <span className="border-l mx-2" aria-hidden="true" />
+
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('bulletList') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('bulletList') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Bullet list"
+            aria-pressed={editor.isActive('bulletList')}
           >
             • List
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('orderedList') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('orderedList') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Numbered list"
+            aria-pressed={editor.isActive('orderedList')}
           >
             1. List
           </button>
-          
-          <span className="border-l mx-2" />
-          
+
+          <span className="border-l mx-2" aria-hidden="true" />
+
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('blockquote') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('blockquote') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Block quote"
+            aria-pressed={editor.isActive('blockquote')}
           >
             Quote
           </button>
           <button
             type="button"
             onClick={() => editor.chain().focus().toggleHighlight().run()}
-            className={`px-2 py-1 rounded ${editor.isActive('highlight') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200'}`}
+            className={`px-3 py-2 rounded text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${editor.isActive('highlight') ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-200 text-slate-700'}`}
+            aria-label="Highlight text"
+            aria-pressed={editor.isActive('highlight')}
           >
             Highlight
           </button>

@@ -59,26 +59,26 @@ export default function Login() {
         {/* Header Section */}
         <div className="mb-10 text-center relative z-10">
           <div className="w-20 h-20 bg-primary-600 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-primary-600/30">
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
           </div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none mb-3">NewsVortex</h1>
-          <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em]">
+          <p className="text-slate-500 text-xs font-black uppercase tracking-[0.3em]">
             {isRegistering ? 'Provision New Access' : 'Secure Operational Login'}
           </p>
         </div>
 
         {/* Notifications */}
         {error && (
-          <div className="bg-rose-50 border border-rose-100 text-rose-600 p-5 rounded-2xl mb-8 flex items-start gap-4 animate-in slide-in-from-top-2 duration-300">
-            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-            <p className="text-[10px] font-black uppercase leading-tight tracking-tight">{error}</p>
+          <div className="bg-rose-50 border border-rose-100 text-rose-700 p-5 rounded-2xl mb-8 flex items-start gap-4 animate-in slide-in-from-top-2 duration-300" role="alert">
+            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+            <p className="text-xs font-black uppercase leading-tight tracking-tight">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="bg-emerald-50 border border-emerald-100 text-emerald-600 p-5 rounded-2xl mb-8 flex items-start gap-4 animate-in slide-in-from-top-2 duration-300">
-            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-            <p className="text-[10px] font-black uppercase leading-tight tracking-tight">{success}</p>
+          <div className="bg-emerald-50 border border-emerald-100 text-emerald-700 p-5 rounded-2xl mb-8 flex items-start gap-4 animate-in slide-in-from-top-2 duration-300" role="status">
+            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+            <p className="text-xs font-black uppercase leading-tight tracking-tight">{success}</p>
           </div>
         )}
 
@@ -87,24 +87,26 @@ export default function Login() {
           {isRegistering && (
             <div className="grid grid-cols-2 gap-4 animate-in slide-in-from-left-4 duration-300">
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">First Name</label>
+                <label htmlFor="firstName" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-2">First Name</label>
                 <input
+                  id="firstName"
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Abbas"
-                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-xs font-black text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all"
                   required
                 />
               </div>
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">Last Name</label>
+                <label htmlFor="lastName" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-2">Last Name</label>
                 <input
+                  id="lastName"
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Dalhatu"
-                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-xs font-black text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all"
+                  className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all"
                   required
                 />
               </div>
@@ -112,33 +114,37 @@ export default function Login() {
           )}
 
           <div>
-            <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">Secure Identifier</label>
+            <label htmlFor="email" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-2">Secure Identifier (Email)</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@cluster.com"
-              className="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-xs font-black text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all placeholder:text-slate-200"
+              className="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all placeholder:text-slate-400"
               required
+              autoComplete="email"
             />
           </div>
 
           <div>
-            <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-2">Access Key</label>
+            <label htmlFor="password" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2 ml-2">Access Key (Password)</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-xs font-black text-slate-900 focus:ring-4 focus:ring-primary-500/10 transition-all placeholder:text-slate-200"
+              className="w-full bg-slate-50 border-0 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all placeholder:text-slate-400"
               required
+              autoComplete={isRegistering ? 'new-password' : 'current-password'}
             />
           </div>
           
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-primary-600 text-white py-5 rounded-2xl hover:bg-primary-700 disabled:opacity-50 transition-all font-black uppercase tracking-[0.2em] text-[11px] shadow-2xl shadow-primary-600/30 active:scale-[0.98]"
+            className="w-full bg-primary-600 text-white py-5 rounded-2xl hover:bg-primary-700 disabled:opacity-50 transition-all font-black uppercase tracking-[0.2em] text-sm shadow-2xl shadow-primary-600/30 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-3">
@@ -151,25 +157,25 @@ export default function Login() {
         
         {/* Toggle & Tools */}
         <div className="mt-10 pt-8 border-t border-slate-50 flex flex-col gap-6 relative z-10">
-          <button 
+          <button
             onClick={() => {
               setIsRegistering(!isRegistering);
               setError('');
               setSuccess('');
             }}
-            className="text-[10px] font-black text-primary-600 uppercase tracking-widest hover:text-primary-700 transition-colors"
+            className="text-xs font-black text-primary-600 uppercase tracking-widest hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded p-1"
           >
             {isRegistering ? 'Already have access? Sign In' : "Don't have access? Register Identity"}
           </button>
-          
-          <div className="flex justify-between items-center text-[8px] font-black text-slate-300 uppercase tracking-[0.3em] px-2">
-            <button onClick={fillDemo} className="hover:text-primary-600 transition-colors">Load Demo Node</button>
+
+          <div className="flex justify-between items-center text-xs font-black text-slate-500 uppercase tracking-[0.2em] px-2">
+            <button onClick={fillDemo} className="hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded p-1">Load Demo Node</button>
             <span>v3.5 Cluster STABLE</span>
           </div>
         </div>
 
         {/* Decorative Background Blur */}
-        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl" aria-hidden="true" />
       </div>
     </div>
   );

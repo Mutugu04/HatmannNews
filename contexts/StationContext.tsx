@@ -59,15 +59,15 @@ export function StationProvider({ children }: { children?: ReactNode }) {
   const loadStations = async () => {
     try {
       setIsLoading(true);
-      const response = await api.get('/stations/my-stations').catch(() => ({ data: { data: FALLBACK_STATIONS } }));
-      // @ts-ignore - Bypass union type mismatch from mock shim
-      // Cast response to any to fix property 'data' does not exist error.
-      const stationList = ((response as any).data.data as any) || FALLBACK_STATIONS;
+      const response = await vortex.stations.getMyStations();
+      // Map from Supabase column names (snake_case) to local interface (camelCase)
+      const stationList: Station[] = response.data.length > 0
+        ? response.data.map((s: any) => ({ id: s.id, name: s.name, callSign: s.call_sign, frequency: s.frequency, city: s.city }))
+        : FALLBACK_STATIONS;
       setStations(stationList);
 
       const savedStationId = localStorage.getItem('currentStationId');
-      // Cast stationList to any[] for find operation to resolve union type conflict
-      const saved = (stationList as any[]).find((s: Station) => s.id === savedStationId);
+      const saved = stationList.find((s: Station) => s.id === savedStationId);
 
       const initialStation = saved || stationList[0] || null;
       setCurrentStation(initialStation);
@@ -91,23 +91,25 @@ export function StationProvider({ children }: { children?: ReactNode }) {
 
   const addStation = async (stationData: Omit<Station, 'id'>) => {
     try {
-      const response = await api.post('/stations', stationData);
-      // Cast the response data to Station to satisfy setStations state type
-      const newStation = response.data.data as Station;
-      if (newStation && typeof newStation === 'object' && 'id' in newStation) {
-        setStations(prev => [...prev, newStation]);
-      } else {
-        // Fallback if API returned something unexpected
-        throw new Error('Invalid station data returned');
-      }
+      const response = await vortex.stations.create({
+        name: stationData.name,
+        call_sign: stationData.callSign,
+        frequency: stationData.frequency,
+        city: stationData.city
+      });
+      const newStation: Station = {
+        id: response.data.id,
+        name: response.data.name,
+        callSign: response.data.call_sign,
+        frequency: response.data.frequency || '',
+        city: response.data.city || ''
+      };
+      setStations(prev => [...prev, newStation]);
     } catch (error) {
-      // Fallback for mock environment
+      console.error('Failed to create station:', error);
+      // Fallback for demo/offline
       const newStation: Station = { ...stationData, id: `st-${Date.now()}` };
       setStations(prev => [...prev, newStation]);
-
-      // Update session storage so it persists if using the mock api
-      const currentMocks = JSON.parse(sessionStorage.getItem('mock_stations') || '[]');
-      sessionStorage.setItem('mock_stations', JSON.stringify([...currentMocks, newStation]));
     }
   };
 
