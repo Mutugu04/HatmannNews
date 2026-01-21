@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../services/api';
+import { api } from '../services/SupabaseService';
 import { useStation } from '../contexts/StationContext';
 import { useAuth } from '../contexts/AuthContext';
 

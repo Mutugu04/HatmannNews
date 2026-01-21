@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useStation, Station } from '../contexts/StationContext';
-import { api } from '../services/api';
+import { api } from '../services/SupabaseService';
 
 type SettingTab = 'general' | 'account' | 'stations' | 'integrations';
 

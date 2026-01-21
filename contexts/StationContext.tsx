@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { api } from '../services/api';
+import { vortex, Station as ServiceStation } from '../services/SupabaseService';
 import { useAuth } from './AuthContext';
 import { useSocket } from './SocketContext';
 
@@ -68,10 +68,10 @@ export function StationProvider({ children }: { children?: ReactNode }) {
       const savedStationId = localStorage.getItem('currentStationId');
       // Cast stationList to any[] for find operation to resolve union type conflict
       const saved = (stationList as any[]).find((s: Station) => s.id === savedStationId);
-      
+
       const initialStation = saved || stationList[0] || null;
       setCurrentStation(initialStation);
-      
+
       if (initialStation) {
         localStorage.setItem('currentStationId', initialStation.id);
       }
@@ -97,14 +97,14 @@ export function StationProvider({ children }: { children?: ReactNode }) {
       if (newStation && typeof newStation === 'object' && 'id' in newStation) {
         setStations(prev => [...prev, newStation]);
       } else {
-         // Fallback if API returned something unexpected
-         throw new Error('Invalid station data returned');
+        // Fallback if API returned something unexpected
+        throw new Error('Invalid station data returned');
       }
     } catch (error) {
       // Fallback for mock environment
       const newStation: Station = { ...stationData, id: `st-${Date.now()}` };
       setStations(prev => [...prev, newStation]);
-      
+
       // Update session storage so it persists if using the mock api
       const currentMocks = JSON.parse(sessionStorage.getItem('mock_stations') || '[]');
       sessionStorage.setItem('mock_stations', JSON.stringify([...currentMocks, newStation]));
@@ -112,12 +112,12 @@ export function StationProvider({ children }: { children?: ReactNode }) {
   };
 
   return (
-    <StationContext.Provider value={{ 
-      stations, 
-      currentStation, 
-      setCurrentStation: handleSetStation, 
+    <StationContext.Provider value={{
+      stations,
+      currentStation,
+      setCurrentStation: handleSetStation,
       addStation,
-      isLoading 
+      isLoading
     }}>
       {children}
     </StationContext.Provider>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 // @ts-ignore
-import { vortex, api } from '../services/api';
+import { vortex, api } from '../services/SupabaseService';
 import { useStation } from '../contexts/StationContext';
 import RichTextEditor from '../components/Editor/RichTextEditor';
 

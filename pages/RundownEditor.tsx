@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { vortex } from '../services/api';
+import { vortex } from '../services/SupabaseService';
 
 interface RundownItem {
   id: string;

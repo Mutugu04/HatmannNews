@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { vortex } from '../services/api';
+import { vortex } from '../services/SupabaseService';
 import { useStation } from '../contexts/StationContext';
 
 interface WireService {
