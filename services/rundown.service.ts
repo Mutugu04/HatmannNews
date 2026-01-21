@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from './SupabaseService';
 
 export async function createShow(data: { stationId: string; name: string; description?: string; defaultDuration?: number; }) {
   return api.post('/rundown/shows', data);

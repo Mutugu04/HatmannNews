@@ -21,15 +21,15 @@ function ProtectedRoute({ children }: { children?: React.ReactNode }) {
   
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950" role="status" aria-live="polite">
         <div className="flex flex-col items-center gap-6">
-          <div className="relative">
+          <div className="relative" aria-hidden="true">
             <div className="w-16 h-16 border-4 border-primary-600/20 rounded-full"></div>
             <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin absolute top-0 left-0"></div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.5em] animate-pulse">Synchronizing Cluster</div>
-            <div className="text-[8px] font-bold text-slate-700 uppercase tracking-widest mt-2">Connecting to NewsVortex Node...</div>
+            <div className="text-sm font-black text-slate-300 uppercase tracking-[0.3em] animate-pulse">Synchronizing Cluster</div>
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Connecting to NewsVortex Node...</div>
           </div>
         </div>
       </div>
@@ -52,10 +52,10 @@ function AppRoutes() {
   
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950" role="status" aria-live="polite">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-[10px] font-black text-primary-600 uppercase tracking-[0.5em] animate-pulse">
+          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" aria-hidden="true"></div>
+          <div className="text-sm font-black text-primary-400 uppercase tracking-[0.3em] animate-pulse">
             Booting System...
           </div>
         </div>

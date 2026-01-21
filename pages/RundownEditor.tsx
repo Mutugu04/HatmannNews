@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { vortex } from '../services/api';
+import { vortex } from '../services/SupabaseService';
 
 interface RundownItem {
   id: string;
   position: number;
   type: string;
   title: string;
-  plannedDuration: number;
+  planned_duration: number;
   status: string;
-  story?: { id: string; title: string; wordCount: number; };
+  story?: { id: string; title: string; word_count: number; };
 }
 
 interface Rundown {
   id: string;
   status: string;
-  totalDuration: number;
+  total_duration: number;
   show_instance: {
     show: { name: string };
     air_date: string;
@@ -46,9 +46,9 @@ export default function RundownEditor() {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newItem, setNewItem] = useState({
-    type: 'STORY',
+    type: 'STORY' as const,
     title: '',
-    plannedDuration: 120,
+    planned_duration: 120,
   });
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function RundownEditor() {
     try {
       await vortex.rundowns.addItem(rundown.id, newItem);
       setShowAddModal(false);
-      setNewItem({ type: 'STORY', title: '', plannedDuration: 120 });
+      setNewItem({ type: 'STORY', title: '', planned_duration: 120 });
       loadRundown();
     } catch (error) {
       console.error('Failed to add item:', error);
@@ -89,8 +89,8 @@ export default function RundownEditor() {
     }
   };
 
-  if (loading) return <div className="p-20 text-center text-slate-400 font-black uppercase tracking-widest text-xs">Querying Production Node...</div>;
-  if (!rundown) return <div className="p-20 text-center text-rose-500 font-black uppercase tracking-widest text-xs">Sequence Not Found.</div>;
+  if (loading) return <div className="p-20 text-center text-slate-600 font-black uppercase tracking-widest text-sm" role="status">Querying Production Node...</div>;
+  if (!rundown) return <div className="p-20 text-center text-rose-600 font-black uppercase tracking-widest text-sm" role="alert">Sequence Not Found.</div>;
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-8">
@@ -101,12 +101,12 @@ export default function RundownEditor() {
               {rundown.show_instance.show.name}
             </h1>
             <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-              {new Date(rundown.show_instance.air_date).toLocaleDateString()} • {formatDuration(rundown.totalDuration)} Total
+              {new Date(rundown.show_instance.air_date).toLocaleDateString()} • {formatDuration(rundown.total_duration)} Total
             </p>
           </div>
-          <button 
+          <button
             onClick={() => setShowAddModal(true)}
-            className="px-8 py-3 bg-primary-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary-600/20"
+            className="px-8 py-3 bg-primary-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-primary-600/20 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2"
           >
             + Add Segment
           </button>
@@ -118,14 +118,14 @@ export default function RundownEditor() {
           {rundown.items.map((item, index) => (
             <div key={item.id} className="p-8 flex items-center justify-between group">
               <div className="flex items-center gap-6">
-                <span className="text-[10px] font-black text-slate-200 mono">{index + 1}</span>
-                <span className="px-3 py-1 bg-slate-100 rounded-lg text-[9px] font-black uppercase tracking-widest">{item.type}</span>
+                <span className="text-xs font-black text-slate-400 mono">{index + 1}</span>
+                <span className="px-3 py-1 bg-slate-100 rounded-lg text-xs font-black uppercase tracking-widest text-slate-700">{item.type}</span>
                 <h3 className="text-lg font-black text-slate-900">{item.title}</h3>
               </div>
               <div className="flex items-center gap-6">
-                <span className="text-sm font-black mono text-slate-400">{formatDuration(item.plannedDuration)}</span>
-                <button onClick={() => handleDeleteItem(item.id)} className="opacity-0 group-hover:opacity-100 transition-opacity text-rose-500">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                <span className="text-sm font-black mono text-slate-600">{formatDuration(item.planned_duration)}</span>
+                <button onClick={() => handleDeleteItem(item.id)} className="opacity-0 group-hover:opacity-100 transition-opacity text-rose-600 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-rose-500 rounded p-1" aria-label={`Delete ${item.title}`}>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
               </div>
             </div>
@@ -134,21 +134,21 @@ export default function RundownEditor() {
       </div>
 
       {showAddModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div className="relative bg-white w-full max-w-lg rounded-[3rem] p-10 shadow-2xl">
-            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">Add Segment</h2>
+            <h2 id="modal-title" className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">Add Segment</h2>
             <div className="space-y-6">
               <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Title</label>
-                <input type="text" value={newItem.title} onChange={e => setNewItem({...newItem, title: e.target.value})} className="w-full bg-slate-50 rounded-xl px-5 py-4 text-sm font-black" />
+                <label htmlFor="segment-title" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Title</label>
+                <input id="segment-title" type="text" value={newItem.title} onChange={e => setNewItem({ ...newItem, title: e.target.value })} className="w-full bg-slate-50 rounded-xl px-5 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" />
               </div>
               <div>
-                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Duration (sec)</label>
-                <input type="number" value={newItem.plannedDuration} onChange={e => setNewItem({...newItem, plannedDuration: parseInt(e.target.value) || 0})} className="w-full bg-slate-50 rounded-xl px-5 py-4 text-sm font-black" />
+                <label htmlFor="segment-duration" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Duration (sec)</label>
+                <input id="segment-duration" type="number" value={newItem.planned_duration} onChange={e => setNewItem({ ...newItem, planned_duration: parseInt(e.target.value) || 0 })} className="w-full bg-slate-50 rounded-xl px-5 py-4 text-sm font-black text-slate-900 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2" />
               </div>
               <div className="flex gap-3 pt-6">
-                <button onClick={() => setShowAddModal(false)} className="flex-grow py-4 text-[10px] font-black uppercase">Cancel</button>
-                <button onClick={handleAddItem} className="flex-grow py-4 bg-primary-600 text-white rounded-2xl text-[10px] font-black uppercase">Insert</button>
+                <button onClick={() => setShowAddModal(false)} className="flex-grow py-4 text-xs font-black uppercase text-slate-600 hover:bg-slate-50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2">Cancel</button>
+                <button onClick={handleAddItem} className="flex-grow py-4 bg-primary-600 text-white rounded-2xl text-xs font-black uppercase focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2">Insert</button>
               </div>
             </div>
           </div>
