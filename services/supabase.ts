@@ -8,8 +8,8 @@ const getEnv = (key: string) => {
   return null;
 };
 
-const supabaseUrl = getEnv('VITE_SUPABASE_URL');
-const supabaseKey = getEnv('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY');
+const supabaseUrl = getEnv('VITE_SUPABASE_URL') || 'https://vpavvvcpjnjwpdpibybh.supabase.co';
+const supabaseKey = getEnv('VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY') || 'sb_publishable_wb8k9G_4vHtNSMZ5syCgaQ_c7s3WK4S';
 
 if (!supabaseUrl || !supabaseKey) {
   console.warn('[NewsVortex] Supabase credentials not found in environment. Using fallback defaults.');

@@ -106,9 +106,9 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
     if (files.length === 0) return null;
     return (
       <div className="mb-4">
-        <div className="flex items-center gap-2 px-2 mb-1">
-          <svg className="w-3 h-3 text-slate-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
-          <span className="text-xs font-black uppercase tracking-widest text-slate-400">{title}</span>
+        <div className="flex items-center gap-2 px-2 mb-1 opacity-50">
+          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
+          <span className="text-[10px] font-black uppercase tracking-widest">{title}</span>
         </div>
         <div className="pl-2 space-y-0.5">
           {files.map(f => <FileItem key={f.path} file={f} />)}
@@ -122,20 +122,20 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-900/40">
-             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
           </div>
           <div>
             <h2 className="text-2xl font-black text-white tracking-tighter uppercase">{blueprint.projectName}</h2>
             <div className="flex gap-2 items-center">
-               <span className="text-blue-400 text-xs font-black uppercase tracking-widest">Workspace Genesis</span>
-               <div className="w-1 h-1 bg-slate-600 rounded-full" aria-hidden="true" />
-               <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">v1.2.0-REALTIME</span>
+               <span className="text-blue-500 text-[9px] font-black uppercase tracking-widest">Workspace Genesis</span>
+               <div className="w-1 h-1 bg-slate-700 rounded-full" />
+               <span className="text-slate-500 text-[9px] font-bold uppercase tracking-widest">v1.2.0-REALTIME</span>
             </div>
           </div>
         </div>
-        <button
+        <button 
           onClick={onReset}
-          className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-black uppercase rounded-xl transition-all border border-slate-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+          className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-black uppercase rounded-xl transition-all border border-slate-700 active:scale-95"
         >
           Exit Blueprint
         </button>
@@ -156,10 +156,10 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
                    <div className="w-2 h-2 rounded-full bg-blue-500" />
                    <span className="text-xs font-mono text-slate-300">{selectedFile.path}</span>
                 </div>
-                <button
+                <button 
                   onClick={handleCopy}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all text-xs font-black uppercase border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 focus:ring-offset-slate-900 ${
-                    copied ? 'text-green-400 bg-green-400/10 border-green-500/20' : 'text-slate-300 hover:text-white hover:bg-slate-800 border-transparent'
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all text-[10px] font-black uppercase border ${
+                    copied ? 'text-green-400 bg-green-400/10 border-green-500/20' : 'text-slate-400 hover:text-white hover:bg-slate-800 border-transparent'
                   }`}
                 >
                   {copied ? 'Copied' : 'Copy Code'}
@@ -193,18 +193,18 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
         <div className="bg-emerald-600/10 border border-emerald-500/30 p-6 rounded-[2rem] flex flex-col gap-4">
            <div className="flex items-center gap-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xl transition-all ${isVerified ? 'bg-emerald-600 shadow-emerald-500/40' : 'bg-slate-800'}`}>
-              <svg className={`w-5 h-5 ${isVerified ? 'text-white animate-bounce' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+              <svg className={`w-5 h-5 text-white ${isVerified ? 'animate-bounce' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
             </div>
             <div>
-               <h4 className="text-white font-black uppercase text-xs tracking-tight">API Socket</h4>
-               <p className="text-slate-400 text-xs">socket.io 4.8.1</p>
+               <h4 className="text-white font-black uppercase text-[10px] tracking-tight">API Socket</h4>
+               <p className="text-slate-500 text-[9px]">socket.io 4.8.1</p>
             </div>
           </div>
           <div className="space-y-3">
-            <button
+            <button 
               onClick={handleInstallSocket}
               disabled={isInstalling || isVerified}
-              className={`w-full py-2.5 rounded-xl font-black uppercase text-xs tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${isVerified ? 'bg-emerald-500 text-white cursor-default' : isInstalling ? 'bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+              className={`w-full py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-all ${isVerified ? 'bg-emerald-500 text-white cursor-default' : isInstalling ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
             >
               {isVerified ? '✔ API Ready' : isInstalling ? 'Installing...' : 'Install Socket'}
             </button>
@@ -218,18 +218,18 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
         <div className="bg-sky-600/10 border border-sky-500/30 p-6 rounded-[2rem] flex flex-col gap-4">
            <div className="flex items-center gap-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xl transition-all ${isWebVerified ? 'bg-sky-600 shadow-sky-500/40' : 'bg-slate-800'}`}>
-              <svg className={`w-5 h-5 ${isWebVerified ? 'text-white animate-pulse' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
+              <svg className={`w-5 h-5 text-white ${isWebVerified ? 'animate-pulse' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" /></svg>
             </div>
             <div>
-               <h4 className="text-white font-black uppercase text-xs tracking-tight">Web Client</h4>
-               <p className="text-slate-400 text-xs">socket.io-client</p>
+               <h4 className="text-white font-black uppercase text-[10px] tracking-tight">Web Client</h4>
+               <p className="text-slate-500 text-[9px]">socket.io-client</p>
             </div>
           </div>
           <div className="space-y-3">
-            <button
+            <button 
               onClick={handleInstallWebClient}
               disabled={isWebInstalling || isWebVerified}
-              className={`w-full py-2.5 rounded-xl font-black uppercase text-xs tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${isWebVerified ? 'bg-sky-500 text-white cursor-default' : isWebInstalling ? 'bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+              className={`w-full py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-all ${isWebVerified ? 'bg-sky-500 text-white cursor-default' : isWebInstalling ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
             >
               {isWebVerified ? '✔ Client Sync' : isWebInstalling ? 'Installing...' : 'Sync Client'}
             </button>
@@ -243,18 +243,18 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
         <div className="bg-blue-600/10 border border-blue-500/30 p-6 rounded-[2rem] flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xl transition-all ${pushOutput ? 'bg-blue-600 shadow-blue-500/40' : 'bg-slate-800'}`}>
-              <svg className={`w-5 h-5 ${pushOutput ? 'text-white' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7" /></svg>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7" /></svg>
             </div>
             <div>
-               <h4 className="text-white font-black uppercase text-xs tracking-tight">Prisma Sync</h4>
-               <p className="text-slate-400 text-xs">PostgreSQL 14+</p>
+               <h4 className="text-white font-black uppercase text-[10px] tracking-tight">Prisma Sync</h4>
+               <p className="text-slate-500 text-[9px]">PostgreSQL 14+</p>
             </div>
           </div>
           <div className="space-y-3">
-            <button
+            <button 
               onClick={handleDbPush}
               disabled={isPushing}
-              className={`w-full py-2.5 rounded-xl font-black uppercase text-xs tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${isPushing ? 'bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+              className={`w-full py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-all ${isPushing ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
             >
               {isPushing ? 'Pushing...' : 'db:push'}
             </button>
@@ -268,18 +268,18 @@ const ScaffoldPanel: React.FC<ScaffoldPanelProps> = ({ blueprint, onReset }) => 
         <div className="bg-primary-600/10 border border-primary-500/30 p-6 rounded-[2rem] flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xl transition-all ${isServerUp ? 'bg-primary-600 shadow-primary-500/40' : 'bg-slate-800'}`}>
-              <svg className={`w-5 h-5 ${isServerUp ? 'text-white animate-pulse' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <svg className={`w-5 h-5 text-white ${isServerUp ? 'animate-pulse' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             </div>
             <div>
-               <h4 className="text-white font-black uppercase text-xs tracking-tight">Boot Cluster</h4>
-               <p className="text-slate-400 text-xs">Express + Socket</p>
+               <h4 className="text-white font-black uppercase text-[10px] tracking-tight">Boot Cluster</h4>
+               <p className="text-slate-500 text-[9px]">Express + Socket</p>
             </div>
           </div>
           <div className="space-y-3">
-            <button
+            <button 
               onClick={handleBootServer}
               disabled={isBooting || isServerUp}
-              className={`w-full py-2.5 rounded-xl font-black uppercase text-xs tracking-widest transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${isServerUp ? 'bg-primary-500 text-white cursor-default' : isBooting ? 'bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
+              className={`w-full py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-all ${isServerUp ? 'bg-primary-500 text-white cursor-default' : isBooting ? 'bg-slate-800 text-slate-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-500'}`}
             >
               {isServerUp ? '✔ Active' : isBooting ? 'Booting...' : 'Start Cluster'}
             </button>

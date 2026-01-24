@@ -1,9 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { vortex } from '../services/SupabaseService';
+import { vortex } from '../services/api';
 import { useStation } from '../contexts/StationContext';
 import { useSocket } from '../contexts/SocketContext';
+import { useAuth } from '../contexts/AuthContext';
+import { UserRole } from '../types';
 
 interface StoryStats {
   total: number;
@@ -15,10 +16,13 @@ interface StoryStats {
 
 export default function CentrePage() {
   const { currentStation } = useStation();
+  const { user } = useAuth();
   const { socket, isConnected } = useSocket();
   const [stats, setStats] = useState<StoryStats>({ total: 0, draft: 0, pending: 0, approved: 0, published: 0 });
   const [pendingStories, setPendingStories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const canApprove = user?.role === UserRole.EDITOR || user?.role === UserRole.ADMIN;
 
   useEffect(() => {
     if (currentStation) {
@@ -63,6 +67,10 @@ export default function CentrePage() {
   };
 
   const handleUpdateStatus = async (storyId: string, status: 'APPROVED' | 'KILLED') => {
+    if (!canApprove) {
+      alert('Insufficient permissions to perform this operation.');
+      return;
+    }
     try {
       await vortex.stories.update(storyId, { status });
       loadDashboardData();
@@ -90,6 +98,13 @@ export default function CentrePage() {
         </div>
       </div>
 
+      {!canApprove && (
+        <div className="bg-amber-50 border border-amber-200 p-6 rounded-3xl mb-10 flex items-center gap-4">
+           <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+           <p className="text-xs font-black text-amber-800 uppercase tracking-widest">Read-Only Mode: You require Editor or Admin clearance to approve narrative transmissions.</p>
+        </div>
+      )}
+
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         <StatCard label="Total Narrative" count={stats.total} color="text-slate-900" bg="bg-white" />
         <StatCard label="Editorial Drafts" count={stats.draft} color="text-slate-400" bg="bg-white" />
@@ -115,20 +130,22 @@ export default function CentrePage() {
                         Journalist: {story.author?.first_name} {story.author?.last_name} • Volume: {story.word_count} W
                       </p>
                     </div>
-                    <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <button 
-                        onClick={() => handleUpdateStatus(story.id, 'KILLED')}
-                        className="px-8 py-3.5 bg-rose-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-700 shadow-xl shadow-rose-600/20"
-                      >
-                        Kill
-                      </button>
-                      <button 
-                        onClick={() => handleUpdateStatus(story.id, 'APPROVED')}
-                        className="px-8 py-3.5 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 shadow-xl shadow-emerald-500/20"
-                      >
-                        Approve
-                      </button>
-                    </div>
+                    {canApprove && (
+                      <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <button 
+                          onClick={() => handleUpdateStatus(story.id, 'KILLED')}
+                          className="px-8 py-3.5 bg-rose-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-700 shadow-xl shadow-rose-600/20"
+                        >
+                          Kill
+                        </button>
+                        <button 
+                          onClick={() => handleUpdateStatus(story.id, 'APPROVED')}
+                          className="px-8 py-3.5 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-500 shadow-xl shadow-emerald-500/20"
+                        >
+                          Approve
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

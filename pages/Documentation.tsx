@@ -30,21 +30,21 @@ export default function Documentation() {
       <div className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-8 rounded-[3rem] shadow-2xl border border-slate-100 print:hidden gap-6">
         <div>
           <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">Global Operations Manual</h1>
-          <p className="text-xs font-black text-slate-500 uppercase tracking-widest mt-2">Comprehensive System Intelligence Aggregate • v3.5.0</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Comprehensive System Intelligence Aggregate • v3.5.0</p>
         </div>
         <div className="flex flex-wrap gap-4">
-          <button
+          <button 
             onClick={downloadPDF}
-            className="px-8 py-4 bg-slate-900 text-white text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-slate-900/20 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:ring-offset-2"
+            className="px-8 py-4 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-800 transition-all flex items-center gap-2 shadow-xl shadow-slate-900/20"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             PDF Manual
           </button>
-          <button
+          <button 
             onClick={downloadWord}
-            className="px-8 py-4 bg-primary-600 text-white text-xs font-black uppercase tracking-widest rounded-2xl hover:bg-primary-500 transition-all flex items-center gap-2 shadow-xl shadow-primary-600/20 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-offset-2"
+            className="px-8 py-4 bg-primary-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-primary-500 transition-all flex items-center gap-2 shadow-xl shadow-primary-600/20"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
             Word Export
           </button>
         </div>
@@ -57,29 +57,29 @@ export default function Documentation() {
         <div className="min-h-[800px] flex flex-col justify-center border-b-[16px] border-primary-600 mb-24 pb-24 page-break-after">
            <div className="mb-16">
              <div className="w-32 h-32 bg-primary-600 rounded-[2.5rem] flex items-center justify-center mb-12 shadow-3xl shadow-primary-600/30">
-               <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" /></svg>
+               <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z" /></svg>
              </div>
              <h1 className="text-8xl font-black text-slate-900 tracking-tighter uppercase leading-[0.8] mb-8">HATMANN<br/><span className="text-primary-600">NewsVortex</span></h1>
              <div className="h-3 w-64 bg-slate-900 rounded-full mb-12"></div>
-             <p className="text-3xl font-black text-slate-500 uppercase tracking-[0.4em] mb-6">Master Protocol & Operations Manual</p>
+             <p className="text-3xl font-black text-slate-400 uppercase tracking-[0.4em] mb-6">Master Protocol & Operations Manual</p>
              <p className="text-xl font-bold text-slate-500 max-w-2xl">The Complete Functional Blueprint for Professional Multi-Station Newsroom Orchestration.</p>
            </div>
            
            <div className="mt-auto grid grid-cols-2 md:grid-cols-4 gap-12">
              <div>
-               <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">SYSTEM VERSION</p>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">SYSTEM VERSION</p>
                <p className="text-sm font-black text-slate-900 uppercase">3.5.0-STABLE</p>
              </div>
              <div>
-               <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">AUTHORED BY</p>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">AUTHORED BY</p>
                <p className="text-sm font-black text-slate-900 uppercase">HATMANN Engineering</p>
              </div>
              <div>
-               <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">DEPLOYMENT</p>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">DEPLOYMENT</p>
                <p className="text-sm font-black text-slate-900 uppercase">Multi-Cluster</p>
              </div>
              <div>
-               <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">DATE</p>
+               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">DATE</p>
                <p className="text-sm font-black text-slate-900 uppercase">February 2026</p>
              </div>
            </div>
@@ -140,24 +140,24 @@ export default function Documentation() {
                <h3 className="text-xl font-black text-slate-900 uppercase tracking-widest mb-6">Status Definitions & Protocols</h3>
                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                     <span className="text-xs font-black text-slate-600 uppercase mb-2 block">DRAFT</span>
-                     <p className="text-xs leading-relaxed">Story is under construction. Only visible to author and editors.</p>
+                     <span className="text-[10px] font-black text-slate-600 uppercase mb-2 block">DRAFT</span>
+                     <p className="text-[11px] leading-relaxed">Story is under construction. Only visible to author and editors.</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
-                     <span className="text-xs font-black text-amber-700 uppercase mb-2 block">PENDING</span>
-                     <p className="text-xs leading-relaxed">Submitted for review. Appears in the Centre Hub for editorial action.</p>
+                     <span className="text-[10px] font-black text-amber-600 uppercase mb-2 block">PENDING</span>
+                     <p className="text-[11px] leading-relaxed">Submitted for review. Appears in the Centre Hub for editorial action.</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
-                     <span className="text-xs font-black text-emerald-700 uppercase mb-2 block">APPROVED</span>
-                     <p className="text-xs leading-relaxed">Verified by an Editor. Ready to be inserted into a broadcast Rundown.</p>
+                     <span className="text-[10px] font-black text-emerald-600 uppercase mb-2 block">APPROVED</span>
+                     <p className="text-[11px] leading-relaxed">Verified by an Editor. Ready to be inserted into a broadcast Rundown.</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200">
-                     <span className="text-xs font-black text-blue-700 uppercase mb-2 block">PUBLISHED</span>
-                     <p className="text-xs leading-relaxed">Active in a Rundown or broadcast. Finalized state for record-keeping.</p>
+                     <span className="text-[10px] font-black text-blue-600 uppercase mb-2 block">PUBLISHED</span>
+                     <p className="text-[11px] leading-relaxed">Active in a Rundown or broadcast. Finalized state for record-keeping.</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200">
-                     <span className="text-xs font-black text-rose-700 uppercase mb-2 block">KILLED</span>
-                     <p className="text-xs leading-relaxed">Rejected story. Preserved in archive but blocked from broadcast.</p>
+                     <span className="text-[10px] font-black text-rose-600 uppercase mb-2 block">KILLED</span>
+                     <p className="text-[11px] leading-relaxed">Rejected story. Preserved in archive but blocked from broadcast.</p>
                   </div>
                </div>
             </div>
@@ -181,8 +181,8 @@ export default function Documentation() {
                   </ul>
                </div>
                <div className="bg-slate-900 text-white p-8 rounded-[2.5rem]">
-                  <h4 className="text-xs font-black text-primary-400 uppercase tracking-[0.4em] mb-4">Protocol: Collaboration</h4>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <h4 className="text-[10px] font-black text-primary-400 uppercase tracking-[0.4em] mb-4">Protocol: Collaboration</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">
                      When opening a story, the <strong>Presence Widget</strong> monitors active sockets. If another user joins, their initials will appear in the header. Editing locks are managed automatically to prevent narrative divergence.
                   </p>
                </div>
@@ -201,16 +201,16 @@ export default function Documentation() {
             </p>
             <div className="grid md:grid-cols-3 gap-6">
                <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-center">
-                  <h5 className="font-black text-slate-900 uppercase text-xs tracking-widest mb-2">Narrative Approval</h5>
-                  <p className="text-xs">One-click approval or rejection of stories submitted by journalists.</p>
+                  <h5 className="font-black text-slate-900 uppercase text-[10px] tracking-widest mb-2">Narrative Approval</h5>
+                  <p className="text-[11px]">One-click approval or rejection of stories submitted by journalists.</p>
                </div>
                <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-center">
-                  <h5 className="font-black text-slate-900 uppercase text-xs tracking-widest mb-2">Production Health</h5>
-                  <p className="text-xs">Monitor socket handshakes and database latency in real-time.</p>
+                  <h5 className="font-black text-slate-900 uppercase text-[10px] tracking-widest mb-2">Production Health</h5>
+                  <p className="text-[11px]">Monitor socket handshakes and database latency in real-time.</p>
                </div>
                <div className="p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-center">
-                  <h5 className="font-black text-slate-900 uppercase text-xs tracking-widest mb-2">Cluster Metrics</h5>
-                  <p className="text-xs">Visual breakdown of draft volume vs. broadcast readiness.</p>
+                  <h5 className="font-black text-slate-900 uppercase text-[10px] tracking-widest mb-2">Cluster Metrics</h5>
+                  <p className="text-[11px]">Visual breakdown of draft volume vs. broadcast readiness.</p>
                </div>
             </div>
           </div>
@@ -230,11 +230,11 @@ export default function Documentation() {
                <div>
                   <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6">Segment Types</h4>
                   <div className="space-y-3">
-                     <div className="flex justify-between text-xs font-bold py-2 border-b border-slate-100"><span>STORY</span> <span className="text-blue-700">Linked to Editorial Archive</span></div>
-                     <div className="flex justify-between text-xs font-bold py-2 border-b border-slate-100"><span>BREAK</span> <span className="text-slate-600">Station/Commercial Break</span></div>
-                     <div className="flex justify-between text-xs font-bold py-2 border-b border-slate-100"><span>LIVE</span> <span className="text-rose-700">Outside Broadcast Link</span></div>
-                     <div className="flex justify-between text-xs font-bold py-2 border-b border-slate-100"><span>INTERVIEW</span> <span className="text-purple-700">In-Studio Guest Segment</span></div>
-                     <div className="flex justify-between text-xs font-bold py-2 border-b border-slate-100"><span>PROMO / AD</span> <span className="text-amber-700">Commercial / Marketing</span></div>
+                     <div className="flex justify-between text-[11px] font-bold py-2 border-b border-slate-100"><span>STORY</span> <span className="text-blue-600">Linked to Editorial Archive</span></div>
+                     <div className="flex justify-between text-[11px] font-bold py-2 border-b border-slate-100"><span>BREAK</span> <span className="text-slate-400">Station/Commercial Break</span></div>
+                     <div className="flex justify-between text-[11px] font-bold py-2 border-b border-slate-100"><span>LIVE</span> <span className="text-rose-600">Outside Broadcast Link</span></div>
+                     <div className="flex justify-between text-[11px] font-bold py-2 border-b border-slate-100"><span>INTERVIEW</span> <span className="text-purple-600">In-Studio Guest Segment</span></div>
+                     <div className="flex justify-between text-[11px] font-bold py-2 border-b border-slate-100"><span>PROMO / AD</span> <span className="text-amber-600">Commercial / Marketing</span></div>
                   </div>
                </div>
                <div>
@@ -243,8 +243,8 @@ export default function Documentation() {
                      The Rundown Editor automatically calculates the <strong>Total Planned Duration</strong>. Producers must ensure the total duration matches the allocated show slot (e.g., 60 minutes).
                   </p>
                   <div className="p-6 bg-slate-900 rounded-3xl text-white">
-                     <p className="text-xs font-black text-primary-400 uppercase tracking-widest mb-2">Automation Tip:</p>
-                     <p className="text-xs italic text-slate-300">Segments can be deleted and re-ordered in real-time, with global updates synced to all control room terminals.</p>
+                     <p className="text-[10px] font-black text-primary-400 uppercase tracking-widest mb-2">Automation Tip:</p>
+                     <p className="text-[11px] italic">Segments can be deleted and re-ordered in real-time, with global updates synced to all control room terminals.</p>
                   </div>
                </div>
             </div>
@@ -291,7 +291,7 @@ export default function Documentation() {
             </div>
             <div className="p-10 bg-slate-900 text-white rounded-[3rem]">
                <h4 className="text-xs font-black text-primary-400 uppercase tracking-widest mb-6">Integration Suite</h4>
-               <p className="text-xs text-slate-300 leading-relaxed">
+               <p className="text-xs text-slate-400 leading-relaxed">
                   Manage API keys and feed URLs for Wire Services. The system supports native RSS and custom JSON endpoints for professional news agency synchronization.
                </p>
             </div>
@@ -312,17 +312,17 @@ export default function Documentation() {
                    </p>
                 </div>
                 <div className="bg-white p-10 rounded-[3rem] shadow-xl border border-slate-100 text-center shrink-0">
-                   <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-2">Technical Inquiries</p>
+                   <p className="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-2">Technical Inquiries</p>
                    <p className="text-lg font-black text-slate-900">Abbas M. Dalhatu</p>
-                   <p className="text-xs font-bold text-slate-500 uppercase mb-6">System Architect</p>
-                   <div className="px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-black uppercase tracking-widest">support@hatmannng.com</div>
+                   <p className="text-[11px] font-bold text-slate-400 uppercase mb-6">System Architect</p>
+                   <div className="px-6 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest">support@hatmannng.com</div>
                 </div>
              </div>
           </div>
         </section>
 
         {/* DOCUMENT FOOTER */}
-        <div className="mt-32 pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-black text-slate-500 uppercase tracking-[0.5em]">
+        <div className="mt-32 pt-12 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">
           <div className="flex items-center gap-4">
              <div className="w-1.5 h-1.5 rounded-full bg-primary-600"></div>
              <span>HATMANN GLOBAL BROADCAST SYSTEMS</span>

@@ -1,3 +1,8 @@
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  EDITOR = 'EDITOR',
+  JOURNALIST = 'JOURNALIST'
+}
 
 export enum DiagnosticStep {
   WELCOME = 'WELCOME',

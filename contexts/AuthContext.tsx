@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import supabase from '../services/supabase';
+import { UserRole } from '../types';
 
 interface User {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
+  role: UserRole;
 }
 
 interface AuthContextType {
@@ -13,7 +15,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string, role?: UserRole) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -30,16 +32,18 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
     email: sessionUser.email || '',
     firstName: sessionUser.user_metadata?.first_name || 'System',
     lastName: sessionUser.user_metadata?.last_name || 'User',
+    role: (sessionUser.user_metadata?.role as UserRole) || UserRole.JOURNALIST,
   });
 
   useEffect(() => {
-    // Initial session recovery
     const initAuth = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         if (error) throw error;
         
         if (session) {
+          // Fetch additional user data from public.users table if needed, 
+          // or rely on user_metadata if it was synced.
           setToken(session.access_token);
           setUser(mapSessionUser(session.user));
         }
@@ -53,8 +57,6 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
     initAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(`[NewsVortex] Auth State Change: ${event}`);
-      
       if (session) {
         setToken(session.access_token);
         setUser(mapSessionUser(session.user));
@@ -62,7 +64,6 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
         setToken(null);
         setUser(null);
       }
-      
       setIsLoading(false);
     });
 
@@ -77,10 +78,9 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
       password,
     });
     if (error) throw error;
-    if (!data.session) throw new Error('Authentication failed: No session established.');
   };
 
-  const register = async (email: string, password: string, firstName: string, lastName: string) => {
+  const register = async (email: string, password: string, firstName: string, lastName: string, role: UserRole = UserRole.JOURNALIST) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -88,11 +88,11 @@ export function AuthProvider({ children }: { children?: ReactNode }) {
         data: {
           first_name: firstName,
           last_name: lastName,
+          role: role,
         }
       }
     });
     if (error) throw error;
-    if (!data.user) throw new Error('User creation failed.');
   };
 
   const logout = async () => {

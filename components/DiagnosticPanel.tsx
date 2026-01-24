@@ -163,13 +163,13 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-black text-white uppercase tracking-tighter">Sentinel Input</h3>
           <div className="flex gap-2">
-             <button
+             <button 
               onClick={() => onScaffoldRequested(NEWSVORTEX_TEMPLATE)}
-              className="text-xs px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30 font-black uppercase hover:bg-indigo-500/30 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800"
+              className="text-[9px] px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-full border border-indigo-500/30 font-black uppercase hover:bg-indigo-500/30 transition-all"
              >
                NewsVortex Template
              </button>
-             <span className="text-xs px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/20 font-black uppercase">
+             <span className="text-[9px] px-3 py-1 bg-blue-500/10 text-blue-500 rounded-full border border-blue-500/20 font-black uppercase">
                Vision 3.2
              </span>
           </div>
@@ -180,7 +180,7 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
           className={`relative mb-8 border-2 border-dashed rounded-[2rem] p-10 transition-all cursor-pointer group flex flex-col items-center justify-center overflow-hidden
             ${isProcessing ? 'border-indigo-500 bg-indigo-500/5' : 'border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/80'}`}
         >
-          <input type="file" ref={fileInputRef} onChange={(e) => e.target.files?.[0] && processImage(e.target.files[0])} accept="image/*" className="sr-only" aria-label="Upload image for analysis" />
+          <input type="file" ref={fileInputRef} onChange={(e) => e.target.files?.[0] && processImage(e.target.files[0])} accept="image/*" className="hidden" />
           
           {isProcessing ? (
              <div className="flex flex-col items-center py-4 relative z-10">
@@ -190,10 +190,10 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
           ) : (
             <div className="text-center relative z-10">
               <div className="w-16 h-16 bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition-colors shadow-xl">
-                 <svg className="w-8 h-8 text-slate-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                 <svg className="w-8 h-8 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
               </div>
-              <p className="text-slate-100 text-sm font-bold uppercase tracking-widest mb-1">Vision Detection</p>
-              <p className="text-slate-400 text-xs font-medium">Logs, RBAC Architecture, or Prisma Schemas</p>
+              <p className="text-slate-200 text-sm font-bold uppercase tracking-widest mb-1">Vision Detection</p>
+              <p className="text-slate-500 text-[10px] font-medium">Logs, RBAC Architecture, or Prisma Schemas</p>
             </div>
           )}
 
@@ -204,38 +204,36 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
 
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           <div className="space-y-1">
-            <label htmlFor="nodeInput" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Node.js</label>
-            <input id="nodeInput" type="text" value={nodeInput} onChange={(e) => setNodeInput(e.target.value)} placeholder="v18+" className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 outline-none" />
+            <label className="text-[8px] font-black text-slate-600 uppercase tracking-widest ml-1">Node.js</label>
+            <input type="text" value={nodeInput} onChange={(e) => setNodeInput(e.target.value)} placeholder="v18+" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-slate-200 text-xs focus:ring-1 focus:ring-blue-500/50 outline-none" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="npmInput" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">npm</label>
-            <input id="npmInput" type="text" value={npmInput} onChange={(e) => setNpmInput(e.target.value)} placeholder="9+" className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 outline-none" />
+            <label className="text-[8px] font-black text-slate-600 uppercase tracking-widest ml-1">npm</label>
+            <input type="text" value={npmInput} onChange={(e) => setNpmInput(e.target.value)} placeholder="9+" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-slate-200 text-xs focus:ring-1 focus:ring-blue-500/50 outline-none" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="pnpmInput" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">pnpm</label>
-            <input id="pnpmInput" type="text" value={pnpmInput} onChange={(e) => setPnpmInput(e.target.value)} placeholder="8+" className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800 outline-none" />
+            <label className="text-[8px] font-black text-slate-600 uppercase tracking-widest ml-1">pnpm</label>
+            <input type="text" value={pnpmInput} onChange={(e) => setPnpmInput(e.target.value)} placeholder="8+" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-slate-200 text-xs focus:ring-1 focus:ring-indigo-500/50 outline-none" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="pgVersionInput" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">PostgreSQL</label>
-            <input id="pgVersionInput" type="text" value={pgVersionInput} onChange={(e) => setPgVersionInput(e.target.value)} placeholder="14+" className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 outline-none" />
+            <label className="text-[8px] font-black text-slate-600 uppercase tracking-widest ml-1">PostgreSQL</label>
+            <input type="text" value={pgVersionInput} onChange={(e) => setPgVersionInput(e.target.value)} placeholder="14+" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-slate-200 text-xs focus:ring-1 focus:ring-blue-500/50 outline-none" />
           </div>
           <div className="space-y-1">
-            <label htmlFor="redisVersionInput" className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Redis</label>
-            <input id="redisVersionInput" type="text" value={redisVersionInput} onChange={(e) => setRedisVersionInput(e.target.value)} placeholder="6+" className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 outline-none" />
+            <label className="text-[8px] font-black text-slate-600 uppercase tracking-widest ml-1">Redis</label>
+            <input type="text" value={redisVersionInput} onChange={(e) => setRedisVersionInput(e.target.value)} placeholder="6+" className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-slate-200 text-xs focus:ring-1 focus:ring-blue-500/50 outline-none" />
           </div>
           
           <div className="md:col-span-1 grid grid-cols-1 gap-1.5 mt-auto">
-            <button
+            <button 
               onClick={() => setPgIsRunning(!pgIsRunning)}
-              aria-pressed={pgIsRunning}
-              className={`h-9 rounded-xl text-xs font-black uppercase tracking-widest border transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${pgIsRunning ? 'bg-green-500/20 border-green-500/30 text-green-300' : 'bg-slate-900 border-slate-700 text-slate-400'}`}
+              className={`h-9 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all ${pgIsRunning ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}
             >
               PG: {pgIsRunning ? 'Online' : 'Offline'}
             </button>
-            <button
+            <button 
               onClick={() => setRedisIsRunning(!redisIsRunning)}
-              aria-pressed={redisIsRunning}
-              className={`h-9 rounded-xl text-xs font-black uppercase tracking-widest border transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-800 ${redisIsRunning ? 'bg-indigo-500/20 border-indigo-500/30 text-indigo-300' : 'bg-slate-900 border-slate-700 text-slate-400'}`}
+              className={`h-9 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all ${redisIsRunning ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400' : 'bg-slate-900 border-slate-800 text-slate-600'}`}
             >
               Redis: {redisIsRunning ? 'Online' : 'Offline'}
             </button>
@@ -246,12 +244,12 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
       <button
         onClick={handleCheck}
         disabled={isProcessing}
-        className={`w-full py-4 rounded-2xl font-black text-white uppercase tracking-[0.2em] text-sm shadow-2xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${isProcessing ? 'bg-slate-800 text-slate-400' : 'bg-blue-600 hover:bg-blue-500 active:scale-95 shadow-blue-500/20'}`}
+        className={`w-full py-4 rounded-2xl font-black text-white uppercase tracking-[0.2em] text-sm shadow-2xl transition-all ${isProcessing ? 'bg-slate-800 opacity-50' : 'bg-blue-600 hover:bg-blue-500 active:scale-95 shadow-blue-500/20'}`}
       >
         Execute System Validation
       </button>
 
-      {error && <p className="text-center text-red-400 text-xs font-black uppercase tracking-widest animate-bounce" role="alert">{error}</p>}
+      {error && <p className="text-center text-red-400 text-[10px] font-black uppercase tracking-widest animate-bounce">{error}</p>}
 
       <style>{`
         @keyframes scan {
