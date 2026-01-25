@@ -6,9 +6,13 @@
     <title>HATMANN NewsVortex</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&swap" rel="stylesheet">
     <!-- Tailwind CSS v4 Browser Client -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+      /* Ensure root is visible even during boot */
+      #root { min-height: 100vh; background-color: #020617; }
+    </style>
 <script type="importmap">
 {
   "imports": {
@@ -26,16 +30,20 @@
     "@tiptap/extension-highlight": "https://esm.sh/@tiptap/extension-highlight@2.11.5",
     "@tiptap/extension-underline": "https://esm.sh/@tiptap/extension-underline@2.11.5",
     "socket.io-client": "https://esm.sh/socket.io-client@4.8.1",
+    "firebase/app": "https://esm.sh/firebase@10.8.0/app",
+    "firebase/firestore": "https://esm.sh/firebase@10.8.0/firestore",
+    "firebase/analytics": "https://esm.sh/firebase@10.8.0/analytics",
     "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "@tailwindcss/vite": "https://esm.sh/@tailwindcss/vite@^4.1.18"
+    "@tailwindcss/vite": "https://esm.sh/@tailwindcss/vite@^4.1.18",
+    "@firebase/firestore": "https://esm.sh/@firebase/firestore@^4.10.0",
+    "@firebase/app": "https://esm.sh/@firebase/app@^0.14.7"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
-    <!-- Entry point for the React application -->
     <script type="module" src="index.tsx"></script>
 </body>
 </html>

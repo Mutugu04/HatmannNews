@@ -62,10 +62,12 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
 
     try {
       const base64Data = await fileToBase64(file);
+      // Initialize GoogleGenAI client right before use to ensure the latest API key is used.
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       
       const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
+        // Using 'gemini-3-pro-preview' for complex text and coding tasks involving project blueprint generation.
+        model: 'gemini-3-pro-preview',
         contents: {
           parts: [
             {
@@ -133,6 +135,7 @@ const DiagnosticPanel: React.FC<DiagnosticPanelProps> = ({ onComplete, onScaffol
         },
       });
 
+      // Directly access .text property from GenerateContentResponse as per guidelines.
       const result = JSON.parse(response.text || '{}');
       
       if (result.blueprint) {

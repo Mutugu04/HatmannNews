@@ -16,15 +16,20 @@
 
 @layer base {
   body {
-    background-color: #020617; /* slate-950 */
-    color: #f8fafc; /* slate-50 */
+    background-color: #f8fafc; /* Change from slate-950 to light gray for base to verify render */
+    color: #0f172a; /* Use dark text for light background */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-sans);
+    min-height: 100vh;
   }
   
   .mono {
     font-family: var(--font-mono);
+  }
+
+  #root {
+    min-height: 100vh;
   }
 }
 
