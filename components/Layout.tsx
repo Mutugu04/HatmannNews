@@ -13,7 +13,7 @@ export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/dashboard', label: 'Dashboard2' },
     { path: '/workspace', label: 'My Workspace' },
     { path: '/stories', label: 'All Stories' },
     { path: '/wire', label: 'Wire Feeds' },
